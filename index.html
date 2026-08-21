@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Lorapok Labs — 3D Interactive Universe & Living Storybook</title>
+  <title>Lorapok Labs — 3D Interactive Universe, 3D Larva Planets & Living Storybook</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,7 +46,6 @@
       color: #f8fafc;
     }
 
-    /* 3D WebGL Canvas */
     #webgl-canvas {
       position: absolute;
       top: 0;
@@ -70,9 +69,7 @@
       z-index: 2;
     }
 
-    /* -------------------------------------------------------------------------
-       3D CINEMATIC SPLASH INTRO SCREEN
-       ------------------------------------------------------------------------- */
+    /* 3D Cinematic Boot Splash Screen */
     #splash-screen {
       position: fixed;
       top: 0;
@@ -209,7 +206,7 @@
       pointer-events: auto;
     }
 
-    /* Top Bar */
+    /* Top Navigation */
     .top-bar {
       display: flex;
       justify-content: space-between;
@@ -266,7 +263,7 @@
       font-weight: 700;
     }
 
-    /* Primary Universe Zone Tabs */
+    /* Universe Spatial Zones Tabs */
     .universe-mode-nav {
       display: flex;
       gap: 5px;
@@ -466,7 +463,31 @@
       font-family: var(--font-mono);
     }
 
-    /* Larva Species Selector Grid (In Sanctuary & Studio Mode) */
+    /* 3D Product Interactive Preview Bar (Under Book Chapters) */
+    .product-3d-preview-strip {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(0, 255, 136, 0.25);
+      border-radius: 12px;
+      padding: 8px 12px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .p3d-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .p3d-desc {
+      font-size: 9.5px;
+      color: var(--neon-green);
+      font-family: var(--font-mono);
+    }
+
+    /* Larva Species Selector Grid */
     .species-selector-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -533,7 +554,7 @@
       transform: translateY(-1px);
     }
 
-    /* 3D Studio Director Controls (Speed, Lights, Camera) */
+    /* 3D Animator Studio Director Controls */
     .studio-controls-panel {
       background: rgba(0, 0, 0, 0.4);
       border: 1px solid rgba(0, 255, 136, 0.2);
@@ -580,7 +601,7 @@
       font-weight: 700;
     }
 
-    /* Project Galaxy Scroll Grid */
+    /* 18-Larva Planet Galaxy Grid */
     .project-grid-scroll {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -941,8 +962,8 @@
         <div>[0.0001] Lorapok Kernel initializing...</div>
         <div>[0.0042] Loading Alive Interface Language (Bio-Digital Synthesis)...</div>
         <div>[0.0089] Awaking Cybernetic Black Soldier Fly Larva mascot...</div>
-        <div>[0.0150] Mounting 18 Celestial Project Nodes + MCP Bridge...</div>
-        <div>[0.0210] System ready. All telemetry circuits nominal.</div>
+        <div>[0.0150] Spawning 18 3D Larva Planets in Celestial Galaxy...</div>
+        <div>[0.0210] System ready. All 3D product previews online.</div>
       </div>
 
       <button class="btn-enter-universe" onclick="dismissSplashScreen()">
@@ -963,7 +984,7 @@
         </div>
         <div class="brand-meta">
           <h1>LORAPOK LABS</h1>
-          <p>Bio-Digital Universe & Bible</p>
+          <p>3D Universe & Larva Planets</p>
         </div>
       </div>
 
@@ -979,7 +1000,7 @@
           <span>🎬</span> 3D Animator Studio
         </button>
         <button class="mode-tab-btn" id="btn-mode-galaxy" onclick="setUniverseMode('galaxy')">
-          <span>🪐</span> 18-Project Galaxy
+          <span>🪐</span> 18-Larva Galaxy
         </button>
       </div>
 
@@ -1025,6 +1046,15 @@
           <div class="media-box" id="panel-media-box" onclick="zoomCurrentArtwork()">
             <img id="panel-media-img" src="assets/WorkRelated/linkedin-carousel-01-marathon-begins.png" alt="Visual">
             <div class="media-badge">Click to enlarge ↗</div>
+          </div>
+
+          <!-- 3D Product Interactive Hologram Status -->
+          <div class="product-3d-preview-strip" id="p3d-strip">
+            <div>
+              <div class="p3d-title" id="p3d-title">⚡ 3D Holographic Preview: DB Replica Reconciler</div>
+              <div class="p3d-desc" id="p3d-desc">Active Hologram: 3D Query Profiler & Gantt Timeline</div>
+            </div>
+            <button class="btn-mini-control active" onclick="rotateBookProductPreview()">Inspect 3D ↺</button>
           </div>
         </div>
 
@@ -1080,7 +1110,7 @@
           </div>
         </div>
 
-        <!-- Project Galaxy Selector Grid (In Galaxy Mode) -->
+        <!-- 18-Larva Planet Galaxy Grid (In Galaxy Mode) -->
         <div class="project-grid-scroll" id="project-grid" style="display: none;">
           <!-- Dynamically populated -->
         </div>
@@ -1112,17 +1142,17 @@
           <div class="t-dot t-yellow"></div>
           <div class="t-dot t-green"></div>
         </div>
-        <div style="font-family: var(--font-mono); font-size: 10.5px; color: #94a3b8;">lorapok-universe ~ v3.2.0</div>
+        <div style="font-family: var(--font-mono); font-size: 10.5px; color: #94a3b8;">lorapok-universe ~ v3.4.0</div>
       </div>
       <div class="terminal-body" id="t-logs">
         <div class="t-line t-purple">[BOOT] Bio-Digital Synthesis Core online.</div>
-        <div class="t-line t-green">🐛 Vaultie Black Soldier Fly Larva: Active Helper.</div>
-        <div class="t-line t-cyan">⚡ 18 Project Celestial Nodes + MCP Server ready.</div>
-        <div class="t-line t-gold">➜ Type 'help' for interactive animator & agent commands.</div>
+        <div class="t-line t-green">🐛 18 3D Larva Planets initialized in Celestial Orbit.</div>
+        <div class="t-line t-cyan">⚡ 3D Book Holographic Product Previews ready.</div>
+        <div class="t-line t-gold">➜ Click any floating 3D Larva Planet to orbit and explore.</div>
       </div>
       <div class="terminal-input-bar">
         <span class="t-green">➜</span>
-        <input type="text" id="t-in" placeholder="type 'agent run', 'species 2', 'mode studio', 'dance'..." onkeydown="handleTerminalInput(event)">
+        <input type="text" id="t-in" placeholder="type 'planet 1..18', 'story 2', 'mode galaxy', 'dance'..." onkeydown="handleTerminalInput(event)">
       </div>
     </div>
 
@@ -1158,7 +1188,7 @@
     </div>
 
     <div class="hint-bubble">
-      🖱️ Drag to orbit 3D Universe • Scroll to zoom • Click Vaultie to trigger reactions
+      🖱️ Drag to orbit 3D Universe • Click any 3D Larva Planet • 3D Products pop up on Book
     </div>
   </div>
 
@@ -1250,7 +1280,7 @@
         const sp = larvaSpeciesData[currentSpeciesIdx];
         text = `${sp.name}. ${sp.role}. ${sp.desc}`;
       } else if (currentUniverseMode === 'galaxy') {
-        const pr = projectMatrixData[currentProjectIdx];
+        const pr = larvaPlanetData[currentPlanetIdx];
         text = `${pr.name}. Category: ${pr.category}. ${pr.tagline}. ${pr.desc}`;
       }
       const u = new SpeechSynthesisUtterance(text);
@@ -1278,7 +1308,7 @@
     }
 
     /* =========================================================================
-       DATA MODELS (Stories, Larva Species, 18 Projects)
+       DATA MODELS (Stories, Larva Species, 18 3D Larva Planets)
        ========================================================================= */
     const masterStories = [
       {
@@ -1291,6 +1321,9 @@
             sub: "02:13 AM • The Legacy Bug Hunt",
             desc: "Late night in Dhaka. An ominous 518-row database mismatch between live replica tables threatens production deployment. Cold coffee, multiple monitors, and relentless dedication: 'Work until the issue is resolved.'",
             img: "assets/WorkRelated/linkedin-carousel-01-marathon-begins.png",
+            p3dName: "3D Replica Reconciler",
+            p3dDesc: "Gantt Timeline & Mismatch Scanner",
+            p3dType: "db_profiler",
             camPos: { x: 0, y: 5.0, z: 12 },
             camLook: { x: 0, y: 1.8, z: 0 },
             labels: ["Marathon", "The Hunt", "Side Quest", "Resolved", "Builder"]
@@ -1301,6 +1334,9 @@
             sub: "04:45 AM • Deep SQL Dissection",
             desc: "Seat row mismatch? Archive tables skipped? Timezone bugs? The engineer dissects queries row by row. Here, the idea of the Lorapok Larva mascot is born—a digital scavenger designed to hunt system bottlenecks.",
             img: "assets/WorkRelated/linkedin-carousel-02-the-hunt.png",
+            p3dName: "3D Laravel Monitor Engine",
+            p3dDesc: "Larvae Trail N+1 Query Detector",
+            p3dType: "laravel_monitor",
             camPos: { x: -4.0, y: 4.5, z: 9.5 },
             camLook: { x: 0, y: 2.0, z: 0 },
             labels: ["Marathon", "The Hunt", "Side Quest", "Resolved", "Builder"]
@@ -1311,6 +1347,9 @@
             sub: "14:20 PM • Cursor Curse Monitor",
             desc: "While optimizing, the engineer builds and ships the Cursor Curse Monitor & Lorapok AI Agent! Published to Open VSX and VS Code Marketplace with 32 commits and 77 AI pair sessions.",
             img: "assets/WorkRelated/linkedin-carousel-03-lorapok-extension.png",
+            p3dName: "3D Cursor Curse Monitor",
+            p3dDesc: "AI Spend Meter & Quota Limiter",
+            p3dType: "cursor_gauge",
             camPos: { x: 4.0, y: 4.5, z: 9.5 },
             camLook: { x: 0, y: 2.0, z: 0 },
             labels: ["Marathon", "The Hunt", "Side Quest", "Resolved", "Builder"]
@@ -1321,6 +1360,9 @@
             sub: "21:00 PM • Complete Data Integrity",
             desc: "Victory! 2,683 rows matched, 3,410 sold items synchronized with 100% precision. Lessons learned: Validate early, automate always, trust but verify.",
             img: "assets/WorkRelated/linkedin-carousel-04-resolved.png",
+            p3dName: "3D Zero-Diff Sync Matrix",
+            p3dDesc: "100% Data Integrity Verification Ring",
+            p3dType: "sync_ring",
             camPos: { x: 0, y: 3.5, z: 8.5 },
             camLook: { x: 0, y: 1.8, z: 0 },
             labels: ["Marathon", "The Hunt", "Side Quest", "Resolved", "Builder"]
@@ -1331,6 +1373,9 @@
             sub: "The Lorapok Philosophy",
             desc: "Mohammad Maizied Hasan Majumder channels enterprise scaling rigor into independent open-source tools: 4,200+ LOC, 77 AI pair sessions. Building for the future from Dhaka to the world.",
             img: "assets/WorkRelated/linkedin-carousel-05-the-builder.png",
+            p3dName: "3D Open-Source DNA Orb",
+            p3dDesc: "Zero-Config Alive Architecture Core",
+            p3dType: "dna_orb",
             camPos: { x: 0, y: 6.0, z: 14.5 },
             camLook: { x: 0, y: 1.8, z: 0 },
             labels: ["Marathon", "The Hunt", "Side Quest", "Resolved", "Builder"]
@@ -1347,6 +1392,9 @@
             sub: "The Beginning of a Dream",
             desc: "Every legendary playback engine starts with a simple vision. Lorapok Player v1.0 was born — minimal, focused, and reliable. But buffering spinners and single-platform constraints demanded metamorphosis.",
             img: "assets/storyboard/storyboard-01-v1-legacy.png",
+            p3dName: "3D v1.0 Media Kernel",
+            p3dDesc: "Modular Stream Demuxing Core",
+            p3dType: "media_v1",
             camPos: { x: 0, y: 5.0, z: 12 },
             camLook: { x: 0, y: 1.8, z: 0 },
             labels: ["Legacy", "Vision", "6 Instars", "Ecosystem", "Apex 8K"]
@@ -1357,6 +1405,9 @@
             sub: "Nature's Blueprint & Supercomputing",
             desc: "Drawing inspiration from the Black Soldier Fly growth cycles, Lorapok Labs engineered INSTAR v2.0: uniting HLS, DASH, 8K ultra HD, hardware pipelines, and developer extensions across Python and NPM.",
             img: "assets/storyboard/storyboard-02-planning.png",
+            p3dName: "3D Instar Architecture Map",
+            p3dDesc: "HLS/DASH Hardware Acceleration",
+            p3dType: "hls_dash",
             camPos: { x: -4.0, y: 4.5, z: 9.5 },
             camLook: { x: 0, y: 2.0, z: 0 },
             labels: ["Legacy", "Vision", "6 Instars", "Ecosystem", "Apex 8K"]
@@ -1367,6 +1418,9 @@
             sub: "The 6 Instars of Growth",
             desc: "From tiny neonate to apex bioengineered engine: Instar 1 (Kernel genesis) -> Instar 2 (Hardware decode) -> Instar 3 (Spatial audio) -> Instar 4 (Cross-platform) -> Instar 5 (SDK) -> Instar 6 (Apex Bio-Engine).",
             img: "assets/storyboard/storyboard-03-instar-growth.png",
+            p3dName: "3D 6-Stage Instar Chrysalis",
+            p3dDesc: "Bio-Engine Metamorphosis Slider",
+            p3dType: "chrysalis",
             camPos: { x: 0, y: 3.8, z: 8.5 },
             camLook: { x: 0, y: 1.8, z: 0 },
             labels: ["Legacy", "Vision", "6 Instars", "Ecosystem", "Apex 8K"]
@@ -1377,6 +1431,9 @@
             sub: "Cross-Platform Ecosystem",
             desc: "INSTAR spans Linux (Snap, Deb), Windows, macOS, Android TV, Web, Chrome Extension, Firefox, Edge, and VS Code. One modular, future-ready engine delivering seamless playback.",
             img: "assets/storyboard/storyboard-04-ecosystem.png",
+            p3dName: "3D Cross-Platform Halo",
+            p3dDesc: "Snap, Deb, Web, Android TV, Mac",
+            p3dType: "platform_halo",
             camPos: { x: 4.0, y: 4.5, z: 9.5 },
             camLook: { x: 0, y: 2.0, z: 0 },
             labels: ["Legacy", "Vision", "6 Instars", "Ecosystem", "Apex 8K"]
@@ -1387,6 +1444,9 @@
             sub: "Live on media.lorapok.tech",
             desc: "8K HDR zero-latency playback for gamers, immersive living room streaming for families on Android TV, and developer APIs. Download today at media.lorapok.tech!",
             img: "assets/storyboard/storyboard-05-launch-celebration.png",
+            p3dName: "3D Apex 8K Disc & 32-Band FFT",
+            p3dDesc: "Lossless Spatial Audio Visualizer",
+            p3dType: "player_apex",
             camPos: { x: 0, y: 4.5, z: 9.0 },
             camLook: { x: 0, y: 1.8, z: 0 },
             labels: ["Legacy", "Vision", "6 Instars", "Ecosystem", "Apex 8K"]
@@ -1403,6 +1463,9 @@
             sub: "Mohammad Maizied Hasan Majumder",
             desc: "Senior Software Engineer with 6+ years building high-concurrency distributed backend systems. By day, scaling Shohoz Ltd for millions of Eid holiday ticket transactions; by night, crafting Lorapok Labs open-source tools.",
             img: "assets/images/mascot_hero.png",
+            p3dName: "3D Shohoz Concurrency Turbine",
+            p3dDesc: "Millions of Transactions Scaler",
+            p3dType: "shohoz_turbine",
             camPos: { x: 0, y: 5.0, z: 12 },
             camLook: { x: 0, y: 1.8, z: 0 },
             labels: ["Founder", "Philosophy", "Vaultie", "Flagships", "Sovereignty"]
@@ -1413,6 +1476,9 @@
             sub: "The Alive Interface Language",
             desc: "Software interfaces treated as organic sensory surfaces. 4 pillars: Zero-Config Efficiency, Silent Background Optimization, Playful Neuroscience, and Digital Metamorphosis.",
             img: "assets/images/hero_bg.png",
+            p3dName: "3D Alive Interface Hex Grid",
+            p3dDesc: "Sensory Volumetric Glassmorphism",
+            p3dType: "hex_grid",
             camPos: { x: -4.0, y: 4.5, z: 9.5 },
             camLook: { x: 0, y: 2.0, z: 0 },
             labels: ["Founder", "Philosophy", "Vaultie", "Flagships", "Sovereignty"]
@@ -1423,6 +1489,9 @@
             sub: "Mascot & Brand Semiotics",
             desc: "Vaultie represents the Black Soldier Fly larva: in nature, elite decomposers of waste; in software, a friendly helper silently consuming memory leaks, N+1 query bloat, and CPU bottlenecks.",
             img: "assets/images/electric_lorapok.png",
+            p3dName: "3D Vaultie Armor Specimen",
+            p3dDesc: "Metallic Charcoal & Neon Green",
+            p3dType: "vaultie_specimen",
             camPos: { x: 0, y: 3.8, z: 8.5 },
             camLook: { x: 0, y: 1.8, z: 0 },
             labels: ["Founder", "Philosophy", "Vaultie", "Flagships", "Sovereignty"]
@@ -1433,6 +1502,9 @@
             sub: "API Atlas • Laravel Monitor • Coding Agent",
             desc: "2,100+ API Atlas with Model Context Protocol (MCP) server, Laravel Execution Monitor with 'The Larvae Trail', Cursor Curse Monitor, Perplexity AI Coding Agent, and on-device Bengali Keyboard.",
             img: "assets/images/security_toon.png",
+            p3dName: "3D API Atlas Globe & MCP Ring",
+            p3dDesc: "2,100+ Live Endpoint Nodes",
+            p3dType: "atlas_globe",
             camPos: { x: 4.0, y: 4.5, z: 9.5 },
             camLook: { x: 0, y: 2.0, z: 0 },
             labels: ["Founder", "Philosophy", "Vaultie", "Flagships", "Sovereignty"]
@@ -1443,6 +1515,9 @@
             sub: "100% Independent & On-Chain",
             desc: "No venture capital, no invasive paywalls, no feature creep. Bootstrapped open engineering funded via peer-to-peer decentralized on-chain sponsorship (USDT on BSC, ETH, Tron, SOL, Aptos).",
             img: "assets/images/lorapok_agent_logo.png",
+            p3dName: "3D Multi-Chain Sovereign Ledger",
+            p3dDesc: "Decentralized Peer-to-Peer Portal",
+            p3dType: "sovereign_ledger",
             camPos: { x: 0, y: 5.0, z: 12 },
             camLook: { x: 0, y: 1.8, z: 0 },
             labels: ["Founder", "Philosophy", "Vaultie", "Flagships", "Sovereignty"]
@@ -1451,7 +1526,7 @@
       }
     ];
 
-    /* 5 Distinct 3D Larva Species based on Bible Specification */
+    /* 5 Main 3D Larva Species in Sanctuary */
     const larvaSpeciesData = [
       {
         id: "vaultie",
@@ -1515,53 +1590,53 @@
       }
     ];
 
-    /* 18 Projects from lorapok.tech */
-    const projectMatrixData = [
-      { name: "Lorapok API Atlas", category: "Developer Tools", tagline: "2,100+ Open APIs + MCP Server", desc: "Zero-config public directory of 2,100+ APIs across 34 categories with built-in Model Context Protocol server for AI coding agents.", url: "https://lorapok.tech/", icon: "🌐" },
-      { name: "Laravel Execution Monitor", category: "Laravel/PHP", tagline: "Zero-Config Profiler & Larvae Trail", desc: "Passive runtime profiler tracking Laravel requests, N+1 query warnings, and Cache ROI calculations.", url: "https://maijied.github.io/lorapok/", icon: "⚡" },
-      { name: "Cursor Curse Monitor", category: "Developer Tools", tagline: "AI API Spend & Quota Limiter", desc: "VS Code / Cursor extension protecting developers from surprise bills by atomically switching to free fallback models at 100% quota.", url: "https://open-vsx.org/extension/maijied/cursor-curse-monitor", icon: "🛡️" },
-      { name: "Lorapok AI Agent", category: "AI / Coding", tagline: "Perplexity Sonar CLI Agent", desc: "Terminal-first AI coding agent with AST diff validation, luxury terminal card views, and automated execution loops.", url: "https://lorapok.tech/", icon: "🤖" },
-      { name: "Lorapok Media Player", category: "Media / 8K", tagline: "Biological INSTAR v2.0 Engine", desc: "Ultra-low latency desktop media engine on Linux Snapcraft with 8K HDR decoding, HLS/DASH streaming, and 32-band visualizer.", url: "https://media.lorapok.tech/", icon: "🎬" },
-      { name: "Lorapok Keyboard", category: "Language / Input", tagline: "2.3M-Word Neural Bengali Input", desc: "On-device native Android Bengali keyboard with contextual next-word prediction and privacy-first local dictionary.", url: "https://lorapok.tech/", icon: "⌨️" },
-      { name: "Dynamic Ollama LLM Chat", category: "AI / Local", tagline: "Local LLM Console & Web UI", desc: "Privacy-centric interface for orchestrating local LLMs via Ollama with VS Code workflows and API access.", url: "https://maijied.github.io/Lorapok-Dynamic-Ollama-LLM-Chat-Interface/", icon: "💬" },
-      { name: "Roast as a Service (RaaS)", category: "Developer Tools", tagline: "Serverless Developer Roast API", desc: "Zero-cold-start API returning English/Bangla developer roasts for CI/CD pipeline notifications and bots.", url: "https://lorapok.tech/", icon: "🔥" },
-      { name: "Lorapok LocalSync", category: "Developer Tools", tagline: "Local-First Private Mesh", desc: "Zero-cloud, peer-to-peer encrypted communication and file transfer across local area networks.", url: "https://lorapok.tech/", icon: "📡" },
-      { name: "Linpad", category: "Desktop / Linux", tagline: "Minimalist GTK Text Editor", desc: "Clean Ubuntu desktop text editor with automated syntax highlighting and live word counters.", url: "https://lorapok.tech/", icon: "📝" },
-      { name: "Lorapok Windows Activator", category: "Utilities", tagline: "Educational 60-Sec KMS Utility", desc: "PowerShell automation utility executing permanent Windows 10/11 activation in under 60 seconds.", url: "https://lorapok.tech/", icon: "🪟" },
-      { name: "Spotlight Tickets", category: "Laravel/PHP", tagline: "Self-Hosted Event Ticketing", desc: "High-concurrency ticket management platform built with Laravel and robust database queuing.", url: "https://github.com/Maijied/spotlight-tickets", icon: "🎟️" },
-      { name: "SubtitleMaster Firefox", category: "Browser Extension", tagline: "Multi-Language Subtitle Tool", desc: "Firefox add-on enabling instant one-click subtitle downloads across streaming media platforms.", url: "https://lorapok.tech/", icon: "🦊" },
-      { name: "xsnap Media Downloader", category: "Media", tagline: "Lossless Media Capture", desc: "Fast media downloader utility for grabbing high-definition streams and audio tracks.", url: "https://lorapok.tech/", icon: "📸" },
-      { name: "Hazari Scoreboard", category: "Games / HTML", tagline: "Animated Card Tournament Board", desc: "Interactive HTML5 scoreboard tailored for the traditional Hazari card game.", url: "https://lorapok.tech/", icon: "🃏" },
-      { name: "AirHockey Unity3D", category: "Games / C#", tagline: "Physics-Driven Arcade Hockey", desc: "Single & multiplayer arcade Air Hockey game built in Unity3D with dynamic lighting.", url: "https://lorapok.tech/", icon: "🏒" },
-      { name: "Bangla Character OCR", category: "Mobile / AI", tagline: "AI-Powered Optical Character Engine", desc: "Android mobile application recognizing hand-written and printed Bangla characters.", url: "https://lorapok.tech/", icon: "👁️" },
-      { name: "Expense Manager Pro", category: "Mobile / Java", tagline: "Personal Budget & Expense Tracker", desc: "Android utility with offline financial analytics, category charts, and budget limits.", url: "https://lorapok.tech/", icon: "📊" }
+    /* 18 3D Larva Planets in Celestial Galaxy */
+    const larvaPlanetData = [
+      { name: "Atlas Explorer Larva", product: "Lorapok API Atlas", category: "Developer Tools", tagline: "2,100+ Open APIs + MCP Server", desc: "Cyan-armored explorer larva with planetary data rings, serving 2,100+ APIs to Claude & Cursor AI agents.", color: 0x00e5ff, emissive: 0x083344, accent: 0x38bdf8, icon: "🌐", url: "https://lorapok.tech/" },
+      { name: "Larvae Trail Monitor", product: "Laravel Execution Monitor", category: "Laravel/PHP", tagline: "Zero-Config Profiler & Larvae Trail", desc: "Crimson-armored scavenger larva consuming slow database queries and calculating Cache ROI.", color: 0xef4444, emissive: 0x7f1d1d, accent: 0xfca5a5, icon: "⚡", url: "https://maijied.github.io/lorapok/" },
+      { name: "Cursor Curse Guardian", product: "Cursor Curse Monitor", category: "Developer Tools", tagline: "AI API Spend & Quota Limiter", desc: "Neon-emerald shielded larva protecting developers from unexpected AI bills with auto free-fallback model overrides.", color: 0x10b981, emissive: 0x064e3b, accent: 0x6ee7b7, icon: "🛡️", url: "https://open-vsx.org/extension/maijied/cursor-curse-monitor" },
+      { name: "Perplexity Sonar Agent", product: "Lorapok AI Agent", category: "AI / Coding", tagline: "Perplexity Sonar CLI Agent", desc: "Cyber-purple neural coding larva executing terminal-first pair programming loops and AST diffs.", color: 0xa855f7, emissive: 0x581c87, accent: 0xe879f9, icon: "🤖", url: "https://lorapok.tech/" },
+      { name: "Instar 8K Apex Sovereign", product: "Lorapok Media Player", category: "Media / 8K", tagline: "Biological INSTAR v2.0 Engine", desc: "Golden-armored apex larva with a 32-band FFT spatial audio visualizer on Linux Snapcraft.", color: 0xfbbf24, emissive: 0xb45309, accent: 0xffedd5, icon: "🎬", url: "https://media.lorapok.tech/" },
+      { name: "Bangla Neural Glyph Larva", product: "Lorapok Keyboard", category: "Language / Input", tagline: "2.3M-Word Neural Bengali Input", desc: "Jade-green linguistic larva predicting Bangla words locally on Android devices.", color: 0x059669, emissive: 0x064e3b, accent: 0x34d399, icon: "⌨️", url: "https://lorapok.tech/" },
+      { name: "Ollama Privacy Deep Larva", product: "Dynamic Ollama LLM Chat", category: "AI / Local", tagline: "Local LLM Console & Web UI", desc: "Deep sapphire larva orchestrating on-premise AI models with zero data leakage.", color: 0x2563eb, emissive: 0x1e3a8a, accent: 0x60a5fa, icon: "💬", url: "https://maijied.github.io/Lorapok-Dynamic-Ollama-LLM-Chat-Interface/" },
+      { name: "Flame Roaster Larva", product: "Roast as a Service", category: "Developer Tools", tagline: "Serverless Developer Roast API", desc: "Fiery orange larva injecting humorous developer roasts into GitHub Actions and CI/CD logs.", color: 0xf97316, emissive: 0x7c2d12, accent: 0xfdba74, icon: "🔥", url: "https://lorapok.tech/" },
+      { name: "Mesh LocalSync Larva", product: "Lorapok LocalSync", category: "Developer Tools", tagline: "Local-First Private Mesh", desc: "Teal antenna larva broadcasting encrypted peer-to-peer packets across LAN boundaries.", color: 0x14b8a6, emissive: 0x134e4a, accent: 0x5eead4, icon: "📡", url: "https://lorapok.tech/" },
+      { name: "Linpad Ubuntu Minimalist", product: "Linpad", category: "Desktop / Linux", tagline: "Minimalist GTK Text Editor", desc: "Ubuntu-amber lightweight editor larva highlighting syntax on Linux desktops.", color: 0xe11d48, emissive: 0x881337, accent: 0xfda4af, icon: "📝", url: "https://lorapok.tech/" },
+      { name: "KMS Speed Activator", product: "Lorapok Windows Activator", category: "Utilities", tagline: "Educational 60-Sec KMS Utility", desc: "Electric cyan PowerShell automation larva for Windows configuration.", color: 0x0284c7, emissive: 0x0c4a6e, accent: 0x38bdf8, icon: "🪟", url: "https://lorapok.tech/" },
+      { name: "Spotlight Ticket Scaler", product: "Spotlight Tickets", category: "Laravel/PHP", tagline: "Self-Hosted Event Ticketing", desc: "Ruby-plated ticketing larva managing massive high-concurrency seat reservation queues.", color: 0xd97706, emissive: 0x78350f, accent: 0xfcd34d, icon: "🎟️", url: "https://github.com/Maijied/spotlight-tickets" },
+      { name: "SubtitleMaster Firefox Larva", product: "SubtitleMaster Firefox", category: "Browser Extension", tagline: "Multi-Language Subtitle Tool", desc: "Firefox fox-orange larva downloading streaming subtitles with single-click ease.", color: 0xea580c, emissive: 0x7c2d12, accent: 0xfdba74, icon: "🦊", url: "https://lorapok.tech/" },
+      { name: "xsnap Media Capture", product: "xsnap Media Downloader", category: "Media", tagline: "Lossless Media Capture", desc: "Indigo capture larva recording video streams with lossless audio fidelity.", color: 0x6366f1, emissive: 0x312e81, accent: 0xa5b4fc, icon: "📸", url: "https://lorapok.tech/" },
+      { name: "Hazari Tournament Larva", product: "Hazari Scoreboard", category: "Games / HTML", tagline: "Animated Card Tournament Board", desc: "Gold and royal-purple card referee larva calculating 1,000-point Hazari match triumphs.", color: 0xca8a04, emissive: 0x713f12, accent: 0xfef08a, icon: "🃏", url: "https://lorapok.tech/" },
+      { name: "AirHockey Neon Puck", product: "AirHockey Unity3D", category: "Games / C#", tagline: "Physics-Driven Arcade Hockey", desc: "Neon cyan ice-rink hockey larva with dynamic collision physics.", color: 0x06b6d4, emissive: 0x164e63, accent: 0x67e8f9, icon: "🏒", url: "https://lorapok.tech/" },
+      { name: "Bangla Vision OCR", product: "Bangla Character OCR", category: "Mobile / AI", tagline: "AI-Powered Optical Character Engine", desc: "Laser-eyed neural vision larva translating handwritten script in real time.", color: 0x8b5cf6, emissive: 0x4c1d95, accent: 0xc4b5fd, icon: "👁️", url: "https://lorapok.tech/" },
+      { name: "Expense Pro Wealth Keeper", product: "Expense Manager Pro", category: "Mobile / Java", tagline: "Personal Budget & Expense Tracker", desc: "Emerald ledger wealth larva balancing personal accounts and category budgets.", color: 0x16a34a, emissive: 0x14532d, accent: 0x86efac, icon: "📊", url: "https://lorapok.tech/" }
     ];
 
     let currentUniverseMode = 'story'; // 'story' | 'sanctuary' | 'studio' | 'galaxy'
     let currentStoryIdx = 0;
     let currentStepIdx = 0;
     let currentSpeciesIdx = 0;
-    let currentProjectIdx = 0;
+    let currentPlanetIdx = 0;
     let locomotionSpeedFactor = 1.0;
 
     /* =========================================================================
-       THREE.JS 3D SCENE & DISNEY-STYLE ANIMATED CHARACTER RIGGING
+       THREE.JS 3D SCENE & 3D LARVA PLANETS + 3D BOOK HOLOGRAMS
        ========================================================================= */
     const canvasContainer = document.getElementById('webgl-canvas');
     let scene, camera, renderer, controls;
-    let bookGroup, flipGroup, mascotGroup, headMesh, visorMesh, eyeLeft, eyeRight;
-    let leftClaw, rightClaw, particleDust, celestialGroup;
+    let bookGroup, flipGroup, mascotGroup, headMesh, eyeLeft, eyeRight;
+    let leftClaw, rightClaw, particleDust, celestialGroup, bookHologramGroup;
     let keyLight, fillLight, centerSpot;
     let larvaSegments = [];
     let antennaTips = [];
     let roboticLegs = [];
-    let projectMeshes = [];
+    let planetLarvaMeshes = [];
     let isMascotDancing = false;
     let isMascotCrawling = false;
 
     try {
       scene = new THREE.Scene();
-      scene.fog = new THREE.FogExp2(0x050816, 0.035);
+      scene.fog = new THREE.FogExp2(0x050816, 0.032);
 
       camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
       camera.position.set(0, 5.0, 12);
@@ -1577,12 +1652,12 @@
         controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
-        controls.maxDistance = 24;
-        controls.minDistance = 3.5;
+        controls.maxDistance = 26;
+        controls.minDistance = 3.2;
         controls.maxPolarAngle = Math.PI / 2 - 0.05;
       }
 
-      // Lights
+      // Lighting
       const ambient = new THREE.AmbientLight(0x15224a, 2.5);
       scene.add(ambient);
 
@@ -1598,7 +1673,7 @@
       centerSpot.position.set(0, 3.5, 1.0);
       scene.add(centerSpot);
 
-      // dais
+      // Dais
       const dais = new THREE.Mesh(
         new THREE.CylinderGeometry(8.5, 9.5, 0.6, 48),
         new THREE.MeshStandardMaterial({ color: 0x0c142e, metalness: 0.8, roughness: 0.25 })
@@ -1616,7 +1691,7 @@
       r2.position.y = 0.02;
       scene.add(r2);
 
-      // 3D Tome
+      // 3D Tome (Book)
       bookGroup = new THREE.Group();
       bookGroup.position.set(0, 0.5, 0);
       scene.add(bookGroup);
@@ -1653,6 +1728,13 @@
       flipPage.position.set(1.9, 0, 0);
       flipGroup.add(flipPage);
 
+      // 3D Product Holographic Pop-Up on Left Page of Book
+      bookHologramGroup = new THREE.Group();
+      bookHologramGroup.position.set(-2.0, 1.0, 0);
+      bookGroup.add(bookHologramGroup);
+
+      buildBookProductHologram("db_profiler");
+
       /* -----------------------------------------------------------------------
          VAULTIE THE 3D ANIMATED MASCOT (Faithful to Lorapok Labs Bible)
          ----------------------------------------------------------------------- */
@@ -1663,28 +1745,56 @@
       buildLarvaSpeciesMesh(0);
 
       /* -----------------------------------------------------------------------
-         18-PROJECT CELESTIAL GALAXY ORBITING NODES
+         18 3D LARVA PLANETS ORBITING IN CELESTIAL GALAXY
          ----------------------------------------------------------------------- */
       celestialGroup = new THREE.Group();
       celestialGroup.position.set(0, 2.0, 0);
       celestialGroup.visible = false;
       scene.add(celestialGroup);
 
-      const radius = 6.2;
-      projectMatrixData.forEach((p, idx) => {
-        const angle = (idx / projectMatrixData.length) * Math.PI * 2;
-        const nodeGeo = new THREE.IcosahedronGeometry(0.35, 2);
-        const nodeMat = new THREE.MeshStandardMaterial({
-          color: idx % 2 === 0 ? 0x00ff88 : 0x00e5ff,
-          emissive: idx % 2 === 0 ? 0x052e16 : 0x083344,
-          emissiveIntensity: 0.9,
-          roughness: 0.2,
+      const radius = 6.8;
+      larvaPlanetData.forEach((p, idx) => {
+        const angle = (idx / larvaPlanetData.length) * Math.PI * 2;
+        const planetLarva = new THREE.Group();
+
+        // 3D Miniature Larva Planet Body
+        const pArmorMat = new THREE.MeshStandardMaterial({
+          color: p.color,
+          emissive: p.emissive,
+          roughness: 0.25,
           metalness: 0.8
         });
-        const mesh = new THREE.Mesh(nodeGeo, nodeMat);
-        mesh.position.set(Math.cos(angle) * radius, (Math.sin(idx * 1.5) * 1.2), Math.sin(angle) * radius);
-        celestialGroup.add(mesh);
-        projectMeshes.push(mesh);
+        const pRingMat = new THREE.MeshBasicMaterial({ color: p.accent });
+
+        // 4 Segments
+        for (let s = 0; s < 4; s++) {
+          const sRad = 0.32 * (1.0 - s * 0.12);
+          const seg = new THREE.Mesh(new THREE.SphereGeometry(sRad, 12, 12), pArmorMat);
+          seg.position.set(0, 0, -s * 0.22);
+          planetLarva.add(seg);
+
+          const r = new THREE.Mesh(new THREE.TorusGeometry(sRad * 0.95, 0.02, 6, 16), pRingMat);
+          r.rotation.x = Math.PI / 2;
+          seg.add(r);
+        }
+
+        // Glowing Eyes
+        const eyeL = new THREE.Mesh(new THREE.SphereGeometry(0.06, 8, 8), new THREE.MeshBasicMaterial({ color: p.accent }));
+        eyeL.position.set(-0.1, 0.1, 0.3);
+        planetLarva.add(eyeL);
+
+        const eyeR = new THREE.Mesh(new THREE.SphereGeometry(0.06, 8, 8), new THREE.MeshBasicMaterial({ color: p.accent }));
+        eyeR.position.set(0.1, 0.1, 0.3);
+        planetLarva.add(eyeR);
+
+        // Planetary Aura Rings
+        const pAura = new THREE.Mesh(new THREE.TorusGeometry(0.65, 0.025, 8, 32), pRingMat);
+        pAura.rotation.x = Math.PI / 3;
+        planetLarva.add(pAura);
+
+        planetLarva.position.set(Math.cos(angle) * radius, (Math.sin(idx * 1.5) * 1.3), Math.sin(angle) * radius);
+        celestialGroup.add(planetLarva);
+        planetLarvaMeshes.push(planetLarva);
       });
 
       // Magic Particle Dust
@@ -1721,7 +1831,7 @@
         // Book gentle hover
         if (bookGroup) bookGroup.position.y = 0.5 + Math.sin(time * 1.5) * 0.05;
 
-        // Undulating Locomotion & Tail Wiggle
+        // Mascot Undulating Locomotion & Tail Wiggle
         if (larvaSegments.length) {
           larvaSegments.forEach((seg, i) => {
             const wave = Math.sin(time * 4 - i * 0.6) * 0.04;
@@ -1750,9 +1860,18 @@
           rightClaw.rotation.x = Math.cos(time * 14) * 0.15;
         }
 
-        // Orbit celestial galaxy
+        // Rotate 3D Book Hologram
+        if (bookHologramGroup) {
+          bookHologramGroup.rotation.y += delta * 0.8;
+        }
+
+        // Orbit and animate each 3D Larva Planet in celestial galaxy
         if (celestialGroup.visible) {
-          celestialGroup.rotation.y += delta * 0.25;
+          celestialGroup.rotation.y += delta * 0.2;
+          planetLarvaMeshes.forEach((pl, idx) => {
+            pl.rotation.y += delta * 1.2;
+            pl.rotation.z = Math.sin(time * 2 + idx) * 0.2;
+          });
         }
 
         // Particle Float Up
@@ -1779,6 +1898,62 @@
       console.warn("WebGL Init Warning:", err);
     }
 
+    /* Build 3D Product Holographic Preview Models on the Book */
+    function buildBookProductHologram(type) {
+      while (bookHologramGroup.children.length > 0) {
+        bookHologramGroup.remove(bookHologramGroup.children[0]);
+      }
+
+      const holoMat = new THREE.MeshPhysicalMaterial({ color: 0x00ff88, transparent: true, opacity: 0.65, roughness: 0.2, metalness: 0.8 });
+      const ringMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff });
+      const goldMat = new THREE.MeshBasicMaterial({ color: 0xfbbf24 });
+
+      if (type === "atlas_globe") {
+        const globe = new THREE.Mesh(new THREE.SphereGeometry(0.7, 16, 16), holoMat);
+        bookHologramGroup.add(globe);
+        const r = new THREE.Mesh(new THREE.TorusGeometry(1.0, 0.03, 8, 32), ringMat);
+        r.rotation.x = Math.PI / 3;
+        bookHologramGroup.add(r);
+      } else if (type === "laravel_monitor" || type === "db_profiler") {
+        for (let i = 0; i < 4; i++) {
+          const bar = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.4 + i * 0.25, 0.18), holoMat);
+          bar.position.set((i - 1.5) * 0.35, (0.2 + i * 0.12), 0);
+          bookHologramGroup.add(bar);
+        }
+        const scanRing = new THREE.Mesh(new THREE.TorusGeometry(0.85, 0.025, 6, 24), ringMat);
+        scanRing.rotation.x = Math.PI / 2;
+        bookHologramGroup.add(scanRing);
+      } else if (type === "cursor_gauge") {
+        const gauge = new THREE.Mesh(new THREE.TorusGeometry(0.8, 0.08, 12, 32, Math.PI * 1.5), goldMat);
+        bookHologramGroup.add(gauge);
+        const core = new THREE.Mesh(new THREE.IcosahedronGeometry(0.35, 1), holoMat);
+        bookHologramGroup.add(core);
+      } else if (type === "player_apex" || type === "hls_dash") {
+        const disc = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.8, 0.06, 32), goldMat);
+        disc.rotation.x = Math.PI / 4;
+        bookHologramGroup.add(disc);
+        for (let b = 0; b < 6; b++) {
+          const vBar = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.3 + (b % 3) * 0.2, 0.08), ringMat);
+          vBar.position.set((b - 2.5) * 0.22, 0.4, 0);
+          bookHologramGroup.add(vBar);
+        }
+      } else {
+        const defaultPoly = new THREE.Mesh(new THREE.OctahedronGeometry(0.7, 1), holoMat);
+        bookHologramGroup.add(defaultPoly);
+        const r = new THREE.Mesh(new THREE.TorusGeometry(0.95, 0.025, 8, 24), goldMat);
+        r.rotation.x = Math.PI / 3;
+        bookHologramGroup.add(r);
+      }
+    }
+
+    function rotateBookProductPreview() {
+      playTone(750, 0.15, 'triangle');
+      if (bookHologramGroup && typeof gsap !== 'undefined') {
+        gsap.to(bookHologramGroup.rotation, { y: "+=3.14", duration: 0.6, ease: "power2.out" });
+        gsap.to(bookHologramGroup.scale, { x: 1.3, y: 1.3, z: 1.3, duration: 0.3, yoyo: true, repeat: 1 });
+      }
+    }
+
     /* Build/Rebuild 3D Larva Species with Small Robotic Legs & Glowing Eyes */
     function buildLarvaSpeciesMesh(speciesIdx) {
       currentSpeciesIdx = speciesIdx;
@@ -1799,7 +1974,7 @@
       });
       const neonRingMat = new THREE.MeshBasicMaterial({ color: sp.accent });
 
-      // 6 Segmented Caterpillar Torso (Plump, Cute, Segmented)
+      // 6 Segmented Caterpillar Torso
       for (let i = 0; i < 6; i++) {
         const segGroup = new THREE.Group();
         const rad = 0.54 * (1.0 - i * 0.09);
@@ -1807,12 +1982,12 @@
         seg.scale.set(1.15, 0.95, 1.0);
         segGroup.add(seg);
 
-        // Glowing neon circuit ring on each segment
+        // Glowing neon circuit ring
         const r = new THREE.Mesh(new THREE.TorusGeometry(rad * 0.98, 0.03, 8, 24), neonRingMat);
         r.rotation.x = Math.PI / 2;
         segGroup.add(r);
 
-        // Small Robotic Legs (Left & Right) on middle segments
+        // Small Robotic Legs (Left & Right)
         if (i >= 1 && i <= 3) {
           [-1, 1].forEach((side) => {
             const legGroup = new THREE.Group();
@@ -1820,7 +1995,6 @@
             legBone.position.set(0, -0.16, 0);
             legGroup.add(legBone);
 
-            // Glowing joint
             const joint = new THREE.Mesh(new THREE.SphereGeometry(0.045, 8, 8), neonRingMat);
             joint.position.set(0, -0.32, 0);
             legGroup.add(joint);
@@ -1884,7 +2058,7 @@
         antennaTips.push(tip);
       }
 
-      // Forearms & Robotic Claws
+      // Claws & Hands
       leftClaw = new THREE.Group();
       rightClaw = new THREE.Group();
 
@@ -1904,7 +2078,7 @@
         mascotGroup.add(h);
       });
 
-      // Holographic Glass Keyboard
+      // Holographic Keyboard
       const kb = new THREE.Mesh(
         new THREE.BoxGeometry(1.4, 0.04, 0.7),
         new THREE.MeshPhysicalMaterial({ color: sp.accent, transparent: true, opacity: 0.4, transmission: 0.8 })
@@ -1966,7 +2140,7 @@
         renderProjectGalaxy();
       }
 
-      appendTerminalLine(`➜ Switched Universe Spatial Zone: ${mode.toUpperCase()}`);
+      appendTerminalLine(`➜ Switched Universe Zone: ${mode.toUpperCase()}`);
     }
 
     /* =========================================================================
@@ -1981,6 +2155,11 @@
       document.getElementById('panel-sub').textContent = ch.sub;
       document.getElementById('panel-desc').textContent = ch.desc;
       document.getElementById('panel-media-img').src = ch.img;
+
+      document.getElementById('p3d-title').textContent = `⚡ 3D Hologram: ${ch.p3dName}`;
+      document.getElementById('p3d-desc').textContent = `Active: ${ch.p3dDesc}`;
+
+      buildBookProductHologram(ch.p3dType);
 
       ch.labels.forEach((lbl, idx) => {
         const el = document.getElementById(`node-lbl-${idx}`);
@@ -2043,7 +2222,7 @@
     function setLocomotionSpeed(speed) {
       locomotionSpeedFactor = speed;
       playTone(800, 0.1);
-      appendTerminalLine(`⚡ Locomotion Speed Multiplier: ${speed}x`);
+      appendTerminalLine(`⚡ Locomotion Speed: ${speed}x`);
     }
 
     function setStudioLight(theme) {
@@ -2077,32 +2256,32 @@
     }
 
     /* =========================================================================
-       18-PROJECT CELESTIAL GALAXY LOGIC
+       18 3D LARVA PLANETS CELESTIAL GALAXY LOGIC
        ========================================================================= */
     function renderProjectGalaxy() {
       const grid = document.getElementById('project-grid');
       grid.innerHTML = '';
 
-      projectMatrixData.forEach((p, idx) => {
+      larvaPlanetData.forEach((p, idx) => {
         const chip = document.createElement('div');
-        chip.className = `project-chip ${idx === currentProjectIdx ? 'active' : ''}`;
-        chip.onclick = () => selectProjectNode(idx);
+        chip.className = `project-chip ${idx === currentPlanetIdx ? 'active' : ''}`;
+        chip.onclick = () => selectLarvaPlanetNode(idx);
         chip.innerHTML = `
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <div class="p-title">${p.icon} ${p.name}</div>
             <span style="font-size:10px;">↗</span>
           </div>
-          <div class="p-category">${p.category}</div>
+          <div class="p-category">${p.product} • ${p.category}</div>
         `;
         grid.appendChild(chip);
       });
 
-      selectProjectNode(currentProjectIdx);
+      selectLarvaPlanetNode(currentPlanetIdx);
     }
 
-    function selectProjectNode(idx) {
-      currentProjectIdx = idx;
-      const p = projectMatrixData[idx];
+    function selectLarvaPlanetNode(idx) {
+      currentPlanetIdx = idx;
+      const p = larvaPlanetData[idx];
       playTone(400 + idx * 30, 0.1, 'sine');
 
       document.querySelectorAll('.project-chip').forEach((c, i) => {
@@ -2110,17 +2289,17 @@
         else c.classList.remove('active');
       });
 
-      document.getElementById('panel-badge').innerHTML = `<span>🪐</span> NODE ${idx + 1}/18`;
+      document.getElementById('panel-badge').innerHTML = `<span>🪐</span> 3D LARVA PLANET ${idx + 1}/18`;
       document.getElementById('panel-title').textContent = p.name;
-      document.getElementById('panel-sub').textContent = `${p.category} • ${p.tagline}`;
+      document.getElementById('panel-sub').textContent = `${p.product} • ${p.tagline}`;
 
-      if (projectMeshes[idx] && camera && controls && typeof gsap !== 'undefined') {
-        const mPos = projectMeshes[idx].position;
+      if (planetLarvaMeshes[idx] && camera && controls && typeof gsap !== 'undefined') {
+        const mPos = planetLarvaMeshes[idx].position;
         gsap.to(camera.position, { x: mPos.x * 1.6, y: mPos.y + 2.0, z: mPos.z * 1.6 + 3.0, duration: 1.4, ease: "power3.inOut" });
         gsap.to(controls.target, { x: mPos.x, y: mPos.y, z: mPos.z, duration: 1.4, ease: "power3.inOut" });
       }
 
-      appendTerminalLine(`🪐 Focus Project [${idx+1}/18]: ${p.name} -> ${p.url}`);
+      appendTerminalLine(`🪐 Focus 3D Larva Planet [${idx+1}/18]: ${p.name} (${p.product})`);
       if (isNarrating) speakCurrentContext();
     }
 
@@ -2173,7 +2352,7 @@
       } else if (currentUniverseMode === 'sanctuary' || currentUniverseMode === 'studio') {
         switchLarvaSpecies((currentSpeciesIdx + delta + larvaSpeciesData.length) % larvaSpeciesData.length);
       } else if (currentUniverseMode === 'galaxy') {
-        selectProjectNode((currentProjectIdx + delta + projectMatrixData.length) % projectMatrixData.length);
+        selectLarvaPlanetNode((currentPlanetIdx + delta + larvaPlanetData.length) % larvaPlanetData.length);
       }
     }
 
@@ -2196,7 +2375,7 @@
         line.classList.add('t-green');
       } else if (text.includes('MISMATCH') || text.includes('WARN')) {
         line.classList.add('t-gold');
-      } else if (text.includes('Vaultie') || text.includes('Loaded') || text.includes('Zone')) {
+      } else if (text.includes('Vaultie') || text.includes('Loaded') || text.includes('Zone') || text.includes('Planet')) {
         line.classList.add('t-cyan');
       }
       line.textContent = text;
@@ -2216,13 +2395,20 @@
 
         if (cmd === 'help') {
           appendTerminalLine("Commands:");
+          appendTerminalLine("  • planet [1..18] : Focus 3D Larva Planet in Galaxy");
           appendTerminalLine("  • story [1..3]   : Switch story (1: Marathon, 2: Instar, 3: Matrix)");
-          appendTerminalLine("  • species [1..5] : Switch larva species (1: Vaultie, 2: Apex, 3: Scout, 4: Wizard, 5: Titan)");
-          appendTerminalLine("  • mode [story|sanctuary|studio|galaxy] : Switch universe spatial zone");
+          appendTerminalLine("  • species [1..5] : Switch larva species in Sanctuary");
+          appendTerminalLine("  • mode [story|sanctuary|studio|galaxy] : Switch spatial zone");
           appendTerminalLine("  • agent run      : Execute Perplexity AI Coding Agent");
           appendTerminalLine("  • mcp            : Check Lorapok Atlas MCP Server");
           appendTerminalLine("  • dance / party  : Celebrate with mascot");
           appendTerminalLine("  • clear          : Clear console logs");
+        } else if (cmd.startsWith('planet ')) {
+          const num = parseInt(cmd.split(' ')[1]) - 1;
+          if (num >= 0 && num < larvaPlanetData.length) {
+            setUniverseMode('galaxy');
+            selectLarvaPlanetNode(num);
+          }
         } else if (cmd === 'story 1') { setUniverseMode('story'); currentStoryIdx = 0; currentStepIdx = 0; renderCurrentStoryChapter(); }
         else if (cmd === 'story 2') { setUniverseMode('story'); currentStoryIdx = 1; currentStepIdx = 0; renderCurrentStoryChapter(); }
         else if (cmd === 'story 3') { setUniverseMode('story'); currentStoryIdx = 2; currentStepIdx = 0; renderCurrentStoryChapter(); }
