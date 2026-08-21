@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Lorapok Labs — 3D Interactive Universe & Living Storybook</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,17 +11,18 @@
 
   <style>
     :root {
-      --bg: #050816;
-      --cyan: #00f2fe;
-      --cyan-glow: rgba(0, 242, 254, 0.45);
-      --purple: #a855f7;
-      --purple-glow: rgba(168, 85, 247, 0.45);
-      --lime: #84cc16;
-      --lime-glow: rgba(132, 204, 22, 0.45);
+      --void-black: #050505;
+      --primary-bg: #070a18;
+      --neon-green: #00ff88;
+      --neon-green-glow: rgba(0, 255, 136, 0.45);
+      --neon-cyan: #00e5ff;
+      --neon-cyan-glow: rgba(0, 229, 255, 0.45);
+      --neon-purple: #a855f7;
+      --neon-purple-glow: rgba(168, 85, 247, 0.45);
       --gold: #fbbf24;
       --gold-glow: rgba(251, 191, 36, 0.45);
-      --glass-bg: rgba(8, 14, 32, 0.88);
-      --glass-border: rgba(255, 255, 255, 0.15);
+      --glass-bg: rgba(7, 12, 28, 0.88);
+      --glass-border: rgba(255, 255, 255, 0.14);
       --font-story: 'Cinzel', serif;
       --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       --font-mono: 'Fira Code', monospace;
@@ -33,17 +34,19 @@
       padding: 0;
       box-sizing: border-box;
       user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body, html {
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: radial-gradient(circle at 50% 30%, #161e47 0%, #080d24 50%, #030611 100%);
+      background: radial-gradient(circle at 50% 30%, #121a3e 0%, #060a1c 50%, #02040a 100%);
       font-family: var(--font-body);
       color: #f8fafc;
     }
 
+    /* 3D WebGL Canvas */
     #webgl-canvas {
       position: absolute;
       top: 0;
@@ -60,13 +63,134 @@
       width: 100%;
       height: 100%;
       background-image: 
-        linear-gradient(rgba(0, 242, 254, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 242, 254, 0.04) 1px, transparent 1px);
-      background-size: 40px 40px;
+        linear-gradient(rgba(0, 255, 136, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 136, 0.035) 1px, transparent 1px);
+      background-size: 36px 36px;
       pointer-events: none;
       z-index: 2;
     }
 
+    /* -------------------------------------------------------------------------
+       3D CINEMATIC SPLASH INTRO SCREEN
+       ------------------------------------------------------------------------- */
+    #splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #03050c;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    #splash-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 620px;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .splash-mascot-glow {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 255, 136, 0.3) 0%, transparent 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      position: relative;
+      animation: splashPulse 2.4s infinite ease-in-out;
+    }
+
+    @keyframes splashPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 30px var(--neon-green-glow); }
+      50% { transform: scale(1.08); box-shadow: 0 0 50px var(--neon-cyan-glow); }
+    }
+
+    .splash-mascot-glow img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .splash-title {
+      font-family: var(--font-story);
+      font-size: 28px;
+      letter-spacing: 2px;
+      background: linear-gradient(90deg, #00ff88, #00e5ff, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .splash-tagline {
+      font-size: 13px;
+      color: #94a3b8;
+      font-family: var(--font-heading);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .splash-bios-terminal {
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #00ff88;
+      text-align: left;
+      width: 100%;
+      max-height: 110px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      line-height: 1.5;
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8);
+    }
+
+    .btn-enter-universe {
+      background: linear-gradient(135deg, var(--neon-green), #00e5ff);
+      color: #030712;
+      border: none;
+      font-family: var(--font-heading);
+      font-size: 13px;
+      font-weight: 800;
+      padding: 12px 32px;
+      border-radius: 30px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 0 25px var(--neon-green-glow);
+      transition: all 0.25s ease;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .btn-enter-universe:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 35px rgba(0, 255, 136, 0.8);
+    }
+
+    /* -------------------------------------------------------------------------
+       HUD MAIN INTERFACE LAYER
+       ------------------------------------------------------------------------- */
     .hud-layer {
       position: absolute;
       top: 0;
@@ -78,20 +202,20 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 16px 24px;
+      padding: 14px 20px;
     }
 
     .interactive {
       pointer-events: auto;
     }
 
-    /* Top Navigation Bar */
+    /* Top Bar */
     .top-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
-      gap: 12px;
+      gap: 10px;
     }
 
     .brand-pill {
@@ -102,21 +226,21 @@
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--glass-border);
-      padding: 8px 20px;
+      padding: 7px 18px;
       border-radius: 40px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px var(--cyan-glow);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px var(--neon-green-glow);
     }
 
     .brand-avatar {
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       overflow: hidden;
-      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 14px var(--cyan);
+      box-shadow: 0 0 12px var(--neon-green);
     }
 
     .brand-avatar img {
@@ -127,29 +251,29 @@
 
     .brand-meta h1 {
       font-family: var(--font-story);
-      font-size: 16px;
-      letter-spacing: 1.5px;
-      background: linear-gradient(90deg, #00f2fe, #c084fc, #38bdf8);
+      font-size: 15px;
+      letter-spacing: 1.2px;
+      background: linear-gradient(90deg, #00ff88, #00e5ff, #38bdf8);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .brand-meta p {
-      font-size: 9.5px;
+      font-size: 9px;
       color: #94a3b8;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 1.2px;
       font-weight: 700;
     }
 
     /* Primary Universe Zone Tabs */
     .universe-mode-nav {
       display: flex;
-      gap: 6px;
+      gap: 5px;
       background: var(--glass-bg);
       backdrop-filter: blur(20px);
       border: 1px solid var(--glass-border);
-      padding: 5px;
+      padding: 4px;
       border-radius: 30px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
     }
@@ -158,14 +282,14 @@
       background: transparent;
       border: none;
       color: #94a3b8;
-      padding: 7px 15px;
+      padding: 6px 14px;
       border-radius: 20px;
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       transition: all 0.25s ease;
     }
 
@@ -175,15 +299,15 @@
     }
 
     .mode-tab-btn.active {
-      background: linear-gradient(135deg, rgba(0, 242, 254, 0.3), rgba(168, 85, 247, 0.3));
-      border: 1px solid var(--cyan);
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.25), rgba(0, 229, 255, 0.25));
+      border: 1px solid var(--neon-green);
       color: #fff;
-      box-shadow: 0 0 15px var(--cyan-glow);
+      box-shadow: 0 0 15px var(--neon-green-glow);
     }
 
     .top-actions-cluster {
       display: flex;
-      gap: 8px;
+      gap: 6px;
     }
 
     .btn-hud {
@@ -191,31 +315,31 @@
       backdrop-filter: blur(16px);
       border: 1px solid var(--glass-border);
       color: #fff;
-      padding: 8px 14px;
+      padding: 7px 13px;
       border-radius: 30px;
       font-size: 11px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       transition: all 0.25s ease;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     }
 
     .btn-hud:hover {
-      border-color: var(--cyan);
-      box-shadow: 0 0 16px var(--cyan-glow);
+      border-color: var(--neon-green);
+      box-shadow: 0 0 16px var(--neon-green-glow);
       transform: translateY(-2px);
     }
 
-    /* Left Floating Panel Container */
+    /* Left Floating Panel */
     .left-panel-container {
       position: absolute;
-      top: 75px;
-      left: 24px;
-      max-width: 500px;
-      width: calc(100% - 48px);
+      top: 70px;
+      left: 20px;
+      max-width: 480px;
+      width: calc(100% - 40px);
       z-index: 20;
     }
 
@@ -224,12 +348,12 @@
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
       border: 1px solid var(--glass-border);
-      border-radius: 24px;
-      padding: 22px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px var(--cyan-glow);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px var(--neon-green-glow);
       position: relative;
       overflow: hidden;
-      max-height: calc(100vh - 180px);
+      max-height: calc(100vh - 165px);
       display: flex;
       flex-direction: column;
     }
@@ -241,37 +365,37 @@
       left: 0;
       right: 0;
       height: 4px;
-      background: linear-gradient(90deg, var(--gold), var(--cyan), var(--purple), var(--lime));
+      background: linear-gradient(90deg, var(--gold), var(--neon-green), var(--neon-cyan), var(--neon-purple));
     }
 
     .card-header-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .badge-pill {
       font-family: var(--font-story);
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
       color: var(--gold);
       background: rgba(251, 191, 36, 0.15);
       border: 1px solid rgba(251, 191, 36, 0.35);
-      padding: 4px 12px;
+      padding: 3px 10px;
       border-radius: 20px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .listen-narration-btn {
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.18);
-      color: var(--cyan);
-      padding: 4px 11px;
+      color: var(--neon-green);
+      padding: 4px 10px;
       border-radius: 16px;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -281,40 +405,40 @@
 
     .card-title {
       font-family: var(--font-story);
-      font-size: 21px;
+      font-size: 20px;
       font-weight: 800;
       letter-spacing: 0.5px;
       color: #fff;
       line-height: 1.25;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     .card-subtitle {
-      font-size: 10.5px;
-      color: var(--cyan);
+      font-size: 10px;
+      color: var(--neon-green);
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 1.8px;
       font-weight: 700;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .card-paragraph {
-      font-size: 13px;
+      font-size: 12.5px;
       line-height: 1.6;
       color: #cbd5e1;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .media-box {
       width: 100%;
-      height: 150px;
-      border-radius: 14px;
+      height: 145px;
+      border-radius: 12px;
       overflow: hidden;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       border: 1px solid rgba(255, 255, 255, 0.15);
       position: relative;
       cursor: pointer;
-      background: #020617;
+      background: #02040a;
       flex-shrink: 0;
     }
 
@@ -333,59 +457,59 @@
       position: absolute;
       bottom: 8px;
       right: 8px;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(8px);
-      font-size: 10px;
+      font-size: 9.5px;
       padding: 3px 8px;
       border-radius: 10px;
-      color: var(--cyan);
+      color: var(--neon-green);
       font-family: var(--font-mono);
     }
 
-    /* Larva Species Selector Grid (In Sanctuary Mode) */
+    /* Larva Species Selector Grid (In Sanctuary & Studio Mode) */
     .species-selector-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 6px;
-      margin-bottom: 14px;
+      gap: 5px;
+      margin-bottom: 12px;
     }
 
     .species-btn {
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 12px;
-      padding: 8px 4px;
+      border-radius: 10px;
+      padding: 6px 3px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       cursor: pointer;
       transition: all 0.25s ease;
     }
 
     .species-btn:hover {
-      background: rgba(0, 242, 254, 0.15);
-      border-color: var(--cyan);
+      background: rgba(0, 255, 136, 0.15);
+      border-color: var(--neon-green);
       transform: translateY(-2px);
     }
 
     .species-btn.active {
-      background: linear-gradient(135deg, rgba(0, 242, 254, 0.25), rgba(168, 85, 247, 0.25));
-      border-color: var(--cyan);
-      box-shadow: 0 0 15px var(--cyan-glow);
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.25), rgba(0, 229, 255, 0.25));
+      border-color: var(--neon-green);
+      box-shadow: 0 0 12px var(--neon-green-glow);
     }
 
-    .species-icon { font-size: 18px; }
-    .species-name { font-size: 9.5px; font-weight: 700; color: #fff; white-space: nowrap; }
+    .species-icon { font-size: 16px; }
+    .species-name { font-size: 9px; font-weight: 700; color: #fff; white-space: nowrap; }
 
     /* Mascot Emote Toolbar */
     .emote-toolbar {
       display: flex;
-      gap: 6px;
-      margin-bottom: 14px;
+      gap: 5px;
+      margin-bottom: 12px;
       background: rgba(0, 0, 0, 0.4);
-      padding: 8px 10px;
-      border-radius: 14px;
+      padding: 6px 8px;
+      border-radius: 12px;
       border: 1px solid rgba(255, 255, 255, 0.08);
       overflow-x: auto;
     }
@@ -394,9 +518,9 @@
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.1);
       color: #e2e8f0;
-      padding: 5px 9px;
-      border-radius: 10px;
-      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 10.5px;
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
@@ -404,60 +528,107 @@
     }
 
     .emote-btn:hover {
-      background: rgba(0, 242, 254, 0.2);
-      border-color: var(--cyan);
+      background: rgba(0, 255, 136, 0.2);
+      border-color: var(--neon-green);
       transform: translateY(-1px);
     }
 
-    /* Project Galaxy List View (In Galaxy Mode) */
+    /* 3D Studio Director Controls (Speed, Lights, Camera) */
+    .studio-controls-panel {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(0, 255, 136, 0.2);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+    }
+
+    .studio-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 11px;
+    }
+
+    .studio-label {
+      color: #94a3b8;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+    }
+
+    .studio-btn-group {
+      display: flex;
+      gap: 4px;
+    }
+
+    .btn-mini-control {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-mini-control:hover, .btn-mini-control.active {
+      background: var(--neon-green);
+      color: #030712;
+      border-color: var(--neon-green);
+      font-weight: 700;
+    }
+
+    /* Project Galaxy Scroll Grid */
     .project-grid-scroll {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
+      gap: 6px;
       overflow-y: auto;
-      max-height: 280px;
+      max-height: 260px;
       padding-right: 4px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .project-chip {
       background: rgba(0, 0, 0, 0.4);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 10px;
+      border-radius: 10px;
+      padding: 8px;
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
     .project-chip:hover {
-      border-color: var(--cyan);
-      background: rgba(0, 242, 254, 0.1);
+      border-color: var(--neon-green);
+      background: rgba(0, 255, 136, 0.1);
       transform: translateY(-2px);
     }
 
     .project-chip.active {
       border-color: var(--gold);
       background: rgba(251, 191, 36, 0.12);
-      box-shadow: 0 0 12px var(--gold-glow);
+      box-shadow: 0 0 10px var(--gold-glow);
     }
 
-    .p-title { font-size: 11.5px; font-weight: 700; color: #fff; margin-bottom: 2px; }
-    .p-category { font-size: 9px; color: var(--cyan); text-transform: uppercase; font-family: var(--font-mono); }
+    .p-title { font-size: 11px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+    .p-category { font-size: 8.5px; color: var(--neon-green); text-transform: uppercase; font-family: var(--font-mono); }
 
     /* Navigation Stepper Footer */
     .card-footer-nav {
       display: flex;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
       margin-top: auto;
     }
 
     .btn-step {
       flex: 1;
-      padding: 10px 16px;
-      border-radius: 12px;
+      padding: 9px 14px;
+      border-radius: 10px;
       border: none;
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -478,74 +649,74 @@
     }
 
     .btn-step.next {
-      background: linear-gradient(135deg, var(--cyan), #0284c7);
+      background: linear-gradient(135deg, var(--neon-green), #00e5ff);
       color: #030712;
-      box-shadow: 0 4px 18px var(--cyan-glow);
+      box-shadow: 0 4px 18px var(--neon-green-glow);
     }
 
     .btn-step.next:hover {
-      box-shadow: 0 6px 24px rgba(0, 242, 254, 0.8);
+      box-shadow: 0 6px 24px rgba(0, 255, 136, 0.8);
       transform: translateY(-2px);
     }
 
     /* Right Interactive Terminal HUD */
     .terminal-hud {
       position: absolute;
-      bottom: 80px;
-      right: 24px;
-      width: 360px;
-      max-height: 380px;
-      background: rgba(8, 14, 32, 0.88);
+      bottom: 75px;
+      right: 20px;
+      width: 350px;
+      max-height: 360px;
+      background: rgba(7, 12, 28, 0.9);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--glass-border);
-      border-radius: 18px;
+      border-radius: 16px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 0 20px var(--purple-glow);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 0 20px var(--neon-green-glow);
       z-index: 20;
       transition: all 0.3s ease;
     }
 
     .terminal-top {
-      background: rgba(15, 23, 42, 0.95);
-      padding: 8px 14px;
+      background: rgba(12, 20, 42, 0.95);
+      padding: 7px 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .t-dots { display: flex; gap: 6px; }
-    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .t-dots { display: flex; gap: 5px; }
+    .t-dot { width: 9px; height: 9px; border-radius: 50%; }
     .t-red { background: #ef4444; }
     .t-yellow { background: #eab308; }
     .t-green { background: #22c55e; }
 
     .terminal-body {
-      padding: 12px 14px;
+      padding: 10px 12px;
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 10.5px;
       color: #93c5fd;
       line-height: 1.5;
       overflow-y: auto;
-      max-height: 200px;
+      max-height: 190px;
       flex-grow: 1;
     }
 
-    .t-line { margin-bottom: 4px; }
-    .t-cyan { color: var(--cyan); }
-    .t-green { color: var(--lime); font-weight: 600; }
-    .t-purple { color: var(--purple); }
+    .t-line { margin-bottom: 3px; }
+    .t-cyan { color: var(--neon-cyan); }
+    .t-green { color: var(--neon-green); font-weight: 600; }
+    .t-purple { color: var(--neon-purple); }
     .t-gold { color: var(--gold); }
 
     .terminal-input-bar {
-      padding: 8px 14px;
+      padding: 7px 12px;
       background: rgba(0, 0, 0, 0.4);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
 
@@ -555,33 +726,33 @@
       outline: none;
       color: #fff;
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 11.5px;
       width: 100%;
     }
 
-    /* Bottom Story Timeline Ribbon */
+    /* Bottom Timeline Ribbon */
     .timeline-ribbon {
       width: 100%;
-      max-width: 840px;
+      max-width: 820px;
       margin: 0 auto;
       background: var(--glass-bg);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--glass-border);
       border-radius: 50px;
-      padding: 8px 24px;
+      padding: 7px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: relative;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 25px var(--cyan-glow);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 20px var(--neon-green-glow);
     }
 
     .ribbon-track-line {
       position: absolute;
       top: 50%;
-      left: 30px;
-      right: 30px;
+      left: 28px;
+      right: 28px;
       height: 3px;
       background: rgba(255, 255, 255, 0.1);
       transform: translateY(-50%);
@@ -591,10 +762,10 @@
     .ribbon-progress-fill {
       position: absolute;
       top: 50%;
-      left: 30px;
+      left: 28px;
       width: 0%;
       height: 3px;
-      background: linear-gradient(90deg, var(--gold), var(--cyan), var(--purple));
+      background: linear-gradient(90deg, var(--gold), var(--neon-green), var(--neon-cyan), var(--neon-purple));
       transform: translateY(-50%);
       z-index: 2;
       transition: width 0.5s ease;
@@ -606,22 +777,22 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       background: none;
       border: none;
       cursor: pointer;
     }
 
     .node-num {
-      width: 26px;
-      height: 26px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
-      background: #0f172a;
+      background: #0b1329;
       border: 2px solid rgba(255, 255, 255, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       font-family: var(--font-story);
       color: #94a3b8;
@@ -629,7 +800,7 @@
     }
 
     .ribbon-node:hover .node-num {
-      border-color: var(--cyan);
+      border-color: var(--neon-green);
       color: #fff;
       transform: scale(1.15);
     }
@@ -638,12 +809,12 @@
       background: var(--gold);
       border-color: #fff;
       color: #030712;
-      box-shadow: 0 0 18px var(--gold);
+      box-shadow: 0 0 16px var(--gold);
       transform: scale(1.25);
     }
 
     .node-text {
-      font-size: 9.5px;
+      font-size: 9px;
       font-weight: 700;
       color: #94a3b8;
       white-space: nowrap;
@@ -668,7 +839,7 @@
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      padding: 20px;
     }
 
     .modal-overlay.open {
@@ -680,7 +851,7 @@
       max-height: 90vh;
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
-      border-radius: 24px;
+      border-radius: 22px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -696,7 +867,7 @@
     }
 
     .modal-footer {
-      padding: 16px 24px;
+      padding: 14px 20px;
       background: #060b1b;
       display: flex;
       justify-content: space-between;
@@ -705,10 +876,10 @@
 
     .modal-close {
       position: absolute;
-      top: 14px;
-      right: 14px;
-      width: 36px;
-      height: 36px;
+      top: 12px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       background: rgba(0, 0, 0, 0.7);
       color: white;
@@ -717,27 +888,31 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      font-size: 16px;
     }
 
     .hint-bubble {
       position: absolute;
-      bottom: 24px;
-      left: 24px;
-      font-size: 11px;
+      bottom: 20px;
+      left: 20px;
+      font-size: 10px;
       color: #94a3b8;
       background: var(--glass-bg);
-      padding: 6px 14px;
+      padding: 5px 12px;
       border-radius: 20px;
       border: 1px solid var(--glass-border);
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 820px) {
       .left-panel-container {
         position: relative;
         top: 0;
         left: 0;
         width: 100%;
+        max-width: 100%;
+      }
+      .glass-card {
+        max-height: 52vh;
       }
       .terminal-hud { display: none; }
       .node-text { display: none; }
@@ -753,11 +928,34 @@
 </head>
 <body>
 
+  <!-- 3D Cinematic Boot Splash Screen -->
+  <div id="splash-screen">
+    <div class="splash-content">
+      <div class="splash-mascot-glow">
+        <img src="assets/images/mascot_hero.png" alt="Vaultie">
+      </div>
+      <h1 class="splash-title">LORAPOK LABS</h1>
+      <p class="splash-tagline">Products That Feel Alive • Bio-Digital Universe</p>
+      
+      <div class="splash-bios-terminal" id="splash-terminal">
+        <div>[0.0001] Lorapok Kernel initializing...</div>
+        <div>[0.0042] Loading Alive Interface Language (Bio-Digital Synthesis)...</div>
+        <div>[0.0089] Awaking Cybernetic Black Soldier Fly Larva mascot...</div>
+        <div>[0.0150] Mounting 18 Celestial Project Nodes + MCP Bridge...</div>
+        <div>[0.0210] System ready. All telemetry circuits nominal.</div>
+      </div>
+
+      <button class="btn-enter-universe" onclick="dismissSplashScreen()">
+        <span>🚀</span> Enter 3D Universe
+      </button>
+    </div>
+  </div>
+
   <div class="cyber-grid-overlay"></div>
   <div id="webgl-canvas"></div>
 
   <div class="hud-layer">
-    <!-- Top Bar -->
+    <!-- Top Navigation Bar -->
     <div class="top-bar">
       <div class="brand-pill interactive">
         <div class="brand-avatar">
@@ -765,11 +963,11 @@
         </div>
         <div class="brand-meta">
           <h1>LORAPOK LABS</h1>
-          <p>3D Interactive Universe</p>
+          <p>Bio-Digital Universe & Bible</p>
         </div>
       </div>
 
-      <!-- Primary Zone Modes -->
+      <!-- Universe Spatial Zones -->
       <div class="universe-mode-nav interactive">
         <button class="mode-tab-btn active" id="btn-mode-story" onclick="setUniverseMode('story')">
           <span>📖</span> Storybook Theater
@@ -777,12 +975,15 @@
         <button class="mode-tab-btn" id="btn-mode-sanctuary" onclick="setUniverseMode('sanctuary')">
           <span>🐛</span> Larva Sanctuary
         </button>
+        <button class="mode-tab-btn" id="btn-mode-studio" onclick="setUniverseMode('studio')">
+          <span>🎬</span> 3D Animator Studio
+        </button>
         <button class="mode-tab-btn" id="btn-mode-galaxy" onclick="setUniverseMode('galaxy')">
           <span>🪐</span> 18-Project Galaxy
         </button>
       </div>
 
-      <!-- Action Cluster -->
+      <!-- Actions -->
       <div class="top-actions-cluster interactive">
         <button class="btn-hud" id="btn-audio" onclick="toggleAudio()">
           <span id="audio-icon">🔊</span> Sound FX
@@ -816,20 +1017,18 @@
 
         <!-- Dynamic Context Area -->
         <div id="panel-dynamic-content">
-          <!-- Story Paragraph (Default) -->
           <p class="card-paragraph" id="panel-desc">
             Late night in Dhaka. An ominous 518-row database mismatch between live replica tables threatens production deployment. 
             Surrounded by cold coffee mugs and terminal diffs, the engineer refuses to sleep: "Work until the issue is resolved."
           </p>
 
-          <!-- Media Visual Box -->
           <div class="media-box" id="panel-media-box" onclick="zoomCurrentArtwork()">
             <img id="panel-media-img" src="assets/WorkRelated/linkedin-carousel-01-marathon-begins.png" alt="Visual">
             <div class="media-badge">Click to enlarge ↗</div>
           </div>
         </div>
 
-        <!-- Larva Sanctuary Species Picker (Visible in Sanctuary Mode) -->
+        <!-- Larva Species Picker (In Sanctuary & Studio Mode) -->
         <div class="species-selector-grid" id="species-grid" style="display: none;">
           <div class="species-btn active" onclick="switchLarvaSpecies(0)">
             <span class="species-icon">🐛</span>
@@ -849,23 +1048,52 @@
           </div>
           <div class="species-btn" onclick="switchLarvaSpecies(4)">
             <span class="species-icon">🛡️</span>
-            <span class="species-name">Robo-Worker</span>
+            <span class="species-name">Titan Scaler</span>
           </div>
         </div>
 
-        <!-- Project Galaxy Selector Grid (Visible in Galaxy Mode) -->
+        <!-- 3D Animator Studio Director Controls (In Studio Mode) -->
+        <div class="studio-controls-panel" id="studio-panel" style="display: none;">
+          <div class="studio-row">
+            <span class="studio-label">Walk / Crawl Engine</span>
+            <div class="studio-btn-group">
+              <button class="btn-mini-control active" onclick="setLocomotionSpeed(1.0)">Normal</button>
+              <button class="btn-mini-control" onclick="setLocomotionSpeed(2.2)">Turbo</button>
+              <button class="btn-mini-control" onclick="setLocomotionSpeed(0.4)">Slow-Mo</button>
+            </div>
+          </div>
+          <div class="studio-row">
+            <span class="studio-label">Lighting Vibe</span>
+            <div class="studio-btn-group">
+              <button class="btn-mini-control active" onclick="setStudioLight('cyber')">Cyber Neon</button>
+              <button class="btn-mini-control" onclick="setStudioLight('gold')">Apex Gold</button>
+              <button class="btn-mini-control" onclick="setStudioLight('matrix')">Matrix Green</button>
+            </div>
+          </div>
+          <div class="studio-row">
+            <span class="studio-label">Camera Director</span>
+            <div class="studio-btn-group">
+              <button class="btn-mini-control" onclick="setDirectorCamera('close')">Mascot Focus</button>
+              <button class="btn-mini-control" onclick="setDirectorCamera('orbit')">Spatial Orbit</button>
+              <button class="btn-mini-control" onclick="setDirectorCamera('book')">Tome View</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project Galaxy Selector Grid (In Galaxy Mode) -->
         <div class="project-grid-scroll" id="project-grid" style="display: none;">
           <!-- Dynamically populated -->
         </div>
 
-        <!-- Pixar Emote Toolbar for Mascot -->
+        <!-- Pixar Mascot Emote Toolbar -->
         <div class="emote-toolbar">
           <button class="emote-btn" onclick="triggerMascotEmote('wave')">👋 Wave</button>
           <button class="emote-btn" onclick="triggerMascotEmote('dance')">💃 Breakdance</button>
+          <button class="emote-btn" onclick="triggerMascotEmote('crawl')">🚶 Walk Legs</button>
           <button class="emote-btn" onclick="triggerMascotEmote('typing')">⚡ Turbo Code</button>
           <button class="emote-btn" onclick="triggerMascotEmote('jump')">🎉 Victory Jump</button>
           <button class="emote-btn" onclick="triggerMascotEmote('morph')">🌱 Molt Evolve</button>
-          <button class="emote-btn" onclick="triggerMascotEmote('sleep')">😴 2 AM Shipping</button>
+          <button class="emote-btn" onclick="triggerMascotEmote('sleep')">😴 2 AM Sleep</button>
         </div>
 
         <!-- Stepper Navigation Footer -->
@@ -876,7 +1104,7 @@
       </div>
     </div>
 
-    <!-- Right Interactive Terminal Console -->
+    <!-- Right Interactive Terminal HUD -->
     <div class="terminal-hud interactive" id="terminal-window">
       <div class="terminal-top">
         <div class="t-dots">
@@ -884,16 +1112,17 @@
           <div class="t-dot t-yellow"></div>
           <div class="t-dot t-green"></div>
         </div>
-        <div style="font-family: var(--font-mono); font-size: 11px; color: #94a3b8;">lorapok-universe ~ v3.0.0</div>
+        <div style="font-family: var(--font-mono); font-size: 10.5px; color: #94a3b8;">lorapok-universe ~ v3.2.0</div>
       </div>
       <div class="terminal-body" id="t-logs">
-        <div class="t-line t-purple">[SYSTEM] Lorapok 3D Universe Spatial Engine initialized.</div>
-        <div class="t-line t-cyan">⚡ 18 Project Celestial Nodes online • MCP Server active.</div>
-        <div class="t-line t-green">➜ Type 'help' for interactive agent and character commands.</div>
+        <div class="t-line t-purple">[BOOT] Bio-Digital Synthesis Core online.</div>
+        <div class="t-line t-green">🐛 Vaultie Black Soldier Fly Larva: Active Helper.</div>
+        <div class="t-line t-cyan">⚡ 18 Project Celestial Nodes + MCP Server ready.</div>
+        <div class="t-line t-gold">➜ Type 'help' for interactive animator & agent commands.</div>
       </div>
       <div class="terminal-input-bar">
-        <span class="t-purple">➜</span>
-        <input type="text" id="t-in" placeholder="type 'agent run', 'species 2', 'story 2', 'dance'..." onkeydown="handleTerminalInput(event)">
+        <span class="t-green">➜</span>
+        <input type="text" id="t-in" placeholder="type 'agent run', 'species 2', 'mode studio', 'dance'..." onkeydown="handleTerminalInput(event)">
       </div>
     </div>
 
@@ -929,7 +1158,7 @@
     </div>
 
     <div class="hint-bubble">
-      🖱️ Drag to orbit 3D Universe • Click floating Project Nodes • Click Larva to interact
+      🖱️ Drag to orbit 3D Universe • Scroll to zoom • Click Vaultie to trigger reactions
     </div>
   </div>
 
@@ -940,8 +1169,8 @@
       <img id="modal-img-tag" src="assets/images/mascot_hero.png" alt="Vaultie">
       <div class="modal-footer">
         <div>
-          <h3 id="modal-title-text" style="font-size: 16px; color: #fff; font-family: var(--font-story);">Vaultie the Cybernetic Larva</h3>
-          <p style="font-size: 11px; color: #94a3b8;">Lorapok Labs 3D Universe Artwork Archives</p>
+          <h3 id="modal-title-text" style="font-size: 15px; color: #fff; font-family: var(--font-story);">Vaultie the Cybernetic Larva</h3>
+          <p style="font-size: 11px; color: #94a3b8;">Lorapok Labs Official Artwork & Media Archives</p>
         </div>
         <button class="btn-hud" onclick="nextGallerySlide()">Next Art →</button>
       </div>
@@ -950,15 +1179,15 @@
 
   <!-- Sovereign Sponsorship Modal -->
   <div class="modal-overlay interactive" id="sponsor-modal" onclick="closeModalOnBg(event)">
-    <div class="modal-card" style="max-width: 600px; padding: 28px;">
+    <div class="modal-card" style="max-width: 580px; padding: 26px;">
       <button class="modal-close" onclick="closeSponsorModal()">✕</button>
-      <h2 style="font-family: var(--font-story); font-size: 24px; color: var(--gold); margin-bottom: 8px;">Operational Sovereignty</h2>
-      <p style="font-size: 13px; color: #cbd5e1; line-height: 1.6; margin-bottom: 20px;">
-        Lorapok Labs is strictly bootstrapped, open-source, and free of venture capital. To keep our tools fast, zero-telemetry, and independent, we accept decentralized peer-to-peer USDT support:
+      <h2 style="font-family: var(--font-story); font-size: 22px; color: var(--gold); margin-bottom: 8px;">Operational Sovereignty</h2>
+      <p style="font-size: 12.5px; color: #cbd5e1; line-height: 1.6; margin-bottom: 18px;">
+        Lorapok Labs is 100% bootstrapped, open-source, and free of venture capital. To keep our tools fast, zero-telemetry, and independent, we accept decentralized peer-to-peer USDT support:
       </p>
       
-      <div style="background: rgba(0,0,0,0.5); padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 14px;">
-        <div style="font-size: 11px; color: var(--cyan); font-weight: 700; text-transform: uppercase;">USDT Multi-Chain Networks</div>
+      <div style="background: rgba(0,0,0,0.5); padding: 14px; border-radius: 12px; border: 1px solid rgba(0,255,136,0.2); margin-bottom: 14px;">
+        <div style="font-size: 11px; color: var(--neon-green); font-weight: 700; text-transform: uppercase;">USDT Multi-Chain Networks</div>
         <div style="font-family: var(--font-mono); font-size: 12px; color: #e2e8f0; margin-top: 6px; line-height: 1.6;">
           • BNB Smart Chain (BEP20)<br>
           • Ethereum (ERC20)<br>
@@ -969,7 +1198,7 @@
       </div>
 
       <div style="font-size: 11px; color: #94a3b8; font-family: var(--font-mono); text-align: center;">
-        Direct Contact / Verification: <span style="color: var(--cyan);">contact@lorapok.tech</span> • #MaJHiBhai
+        Direct Contact / Verification: <span style="color: var(--neon-green);">contact@lorapok.tech</span> • #MaJHiBhai
       </div>
     </div>
   </div>
@@ -1017,7 +1246,7 @@
       if (currentUniverseMode === 'story') {
         const ch = masterStories[currentStoryIdx].chapters[currentStepIdx];
         text = `${ch.title}. ${ch.sub}. ${ch.desc}`;
-      } else if (currentUniverseMode === 'sanctuary') {
+      } else if (currentUniverseMode === 'sanctuary' || currentUniverseMode === 'studio') {
         const sp = larvaSpeciesData[currentSpeciesIdx];
         text = `${sp.name}. ${sp.role}. ${sp.desc}`;
       } else if (currentUniverseMode === 'galaxy') {
@@ -1035,6 +1264,17 @@
       document.getElementById('speech-label').textContent = isNarrating ? 'Narrate: ON' : 'Narrate';
       if (isNarrating) speakCurrentContext();
       else window.speechSynthesis.cancel();
+    }
+
+    function dismissSplashScreen() {
+      const splash = document.getElementById('splash-screen');
+      splash.classList.add('hidden');
+      playTone(523.25, 0.15, 'triangle', 0.1);
+      setTimeout(() => playTone(659.25, 0.15, 'triangle', 0.1), 100);
+      setTimeout(() => playTone(783.99, 0.25, 'triangle', 0.1), 200);
+      setTimeout(() => playTone(1046.50, 0.4, 'triangle', 0.12), 300);
+      
+      triggerMascotEmote('wave');
     }
 
     /* =========================================================================
@@ -1211,28 +1451,30 @@
       }
     ];
 
-    /* 5 Distinct 3D Larva Species */
+    /* 5 Distinct 3D Larva Species based on Bible Specification */
     const larvaSpeciesData = [
       {
         id: "vaultie",
-        name: "Vaultie the Scavenger",
-        role: "Memory & Query Optimizer",
-        desc: "The classic cybernetic Black Soldier Fly larva. Features charcoal #0d1117 armor plating, cyan data streams, and holographic typing claws.",
-        color: 0x3b1d75,
-        emissive: 0x1d0e3d,
-        accent: 0x00f2fe,
+        name: "Vaultie (BSF Larva)",
+        role: "The Friendly Scavenger",
+        desc: "Sleek dark-metallic/charcoal armor plating fused with bright glowing neon-green panels (#00ff88), small robotic legs with glowing joints, large glowing green eyes, and cyan stalk antennas.",
+        color: 0x1a1a1a,
+        emissive: 0x052e16,
+        accent: 0x00ff88,
+        antennaColor: 0x00e5ff,
         scale: 1.0,
         img: "assets/images/mascot_hero.png"
       },
       {
         id: "apex_gold",
-        name: "Instar-6 Apex Sovereign",
-        role: "8K HDR Media Engine",
-        desc: "The fully molted golden guardian. Boasts golden metallic carapace, amber energy visor, crown antennas, and a radiant particle aura.",
+        name: "Apex Sovereign",
+        role: "Instar-6 8K Guardian",
+        desc: "The fully molted golden guardian. Boasts golden metallic carapace, amber energy visor, crown antennas, and radiant particle thruster legs.",
         color: 0xfbbf24,
         emissive: 0xb45309,
         accent: 0xffedd5,
-        scale: 1.25,
+        antennaColor: 0xf59e0b,
+        scale: 1.22,
         img: "assets/images/electric_lorapok.png"
       },
       {
@@ -1243,7 +1485,8 @@
         color: 0x84cc16,
         emissive: 0x3f6212,
         accent: 0xa3e635,
-        scale: 0.85,
+        antennaColor: 0x22c55e,
+        scale: 0.88,
         img: "assets/images/lorapok-instar-logo-mark.png"
       },
       {
@@ -1254,17 +1497,19 @@
         color: 0xa855f7,
         emissive: 0x581c87,
         accent: 0xe879f9,
+        antennaColor: 0xc084fc,
         scale: 1.05,
         img: "assets/images/lorapok_agent_logo.png"
       },
       {
-        id: "robo_scaler",
-        name: "Robo-Worker Scaler",
+        id: "titan_scaler",
+        name: "Titan Scaler",
         role: "High-Concurrency Architect",
         desc: "Reinforced titanium-slate armor with industrial warning accents. Inspired by enterprise Eid holiday ticket transaction concurrency at Shohoz.",
-        color: 0x475569,
-        emissive: 0x1e293b,
+        color: 0x334155,
+        emissive: 0x0f172a,
         accent: 0xfacc15,
+        antennaColor: 0xeab308,
         scale: 1.15,
         img: "assets/images/security_toon.png"
       }
@@ -1292,11 +1537,12 @@
       { name: "Expense Manager Pro", category: "Mobile / Java", tagline: "Personal Budget & Expense Tracker", desc: "Android utility with offline financial analytics, category charts, and budget limits.", url: "https://lorapok.tech/", icon: "📊" }
     ];
 
-    let currentUniverseMode = 'story'; // 'story' | 'sanctuary' | 'galaxy'
+    let currentUniverseMode = 'story'; // 'story' | 'sanctuary' | 'studio' | 'galaxy'
     let currentStoryIdx = 0;
     let currentStepIdx = 0;
     let currentSpeciesIdx = 0;
     let currentProjectIdx = 0;
+    let locomotionSpeedFactor = 1.0;
 
     /* =========================================================================
        THREE.JS 3D SCENE & DISNEY-STYLE ANIMATED CHARACTER RIGGING
@@ -1305,10 +1551,13 @@
     let scene, camera, renderer, controls;
     let bookGroup, flipGroup, mascotGroup, headMesh, visorMesh, eyeLeft, eyeRight;
     let leftClaw, rightClaw, particleDust, celestialGroup;
+    let keyLight, fillLight, centerSpot;
     let larvaSegments = [];
     let antennaTips = [];
+    let roboticLegs = [];
     let projectMeshes = [];
     let isMascotDancing = false;
+    let isMascotCrawling = false;
 
     try {
       scene = new THREE.Scene();
@@ -1334,18 +1583,18 @@
       }
 
       // Lights
-      const ambient = new THREE.AmbientLight(0x1a2655, 2.5);
+      const ambient = new THREE.AmbientLight(0x15224a, 2.5);
       scene.add(ambient);
 
-      const keyLight = new THREE.DirectionalLight(0x00f2fe, 3.0);
+      keyLight = new THREE.DirectionalLight(0x00ff88, 3.0);
       keyLight.position.set(8, 14, 10);
       scene.add(keyLight);
 
-      const fillLight = new THREE.DirectionalLight(0xa855f7, 2.2);
+      fillLight = new THREE.DirectionalLight(0x00e5ff, 2.2);
       fillLight.position.set(-8, 10, -6);
       scene.add(fillLight);
 
-      const centerSpot = new THREE.PointLight(0xfbbf24, 3.5, 16);
+      centerSpot = new THREE.PointLight(0xfbbf24, 3.5, 16);
       centerSpot.position.set(0, 3.5, 1.0);
       scene.add(centerSpot);
 
@@ -1357,12 +1606,12 @@
       dais.position.y = -0.3;
       scene.add(dais);
 
-      const r1 = new THREE.Mesh(new THREE.TorusGeometry(8.2, 0.05, 16, 48), new THREE.MeshBasicMaterial({ color: 0x00f2fe }));
+      const r1 = new THREE.Mesh(new THREE.TorusGeometry(8.2, 0.05, 16, 48), new THREE.MeshBasicMaterial({ color: 0x00ff88 }));
       r1.rotation.x = Math.PI / 2;
       r1.position.y = 0.02;
       scene.add(r1);
 
-      const r2 = new THREE.Mesh(new THREE.TorusGeometry(5.2, 0.04, 16, 48), new THREE.MeshBasicMaterial({ color: 0xa855f7 }));
+      const r2 = new THREE.Mesh(new THREE.TorusGeometry(5.2, 0.04, 16, 48), new THREE.MeshBasicMaterial({ color: 0x00e5ff }));
       r2.rotation.x = Math.PI / 2;
       r2.position.y = 0.02;
       scene.add(r2);
@@ -1372,7 +1621,7 @@
       bookGroup.position.set(0, 0.5, 0);
       scene.add(bookGroup);
 
-      const coverMat = new THREE.MeshStandardMaterial({ color: 0x140a2f, roughness: 0.4, metalness: 0.6 });
+      const coverMat = new THREE.MeshStandardMaterial({ color: 0x11162b, roughness: 0.4, metalness: 0.6 });
       const goldMat = new THREE.MeshStandardMaterial({ color: 0xfbbf24, metalness: 0.9, roughness: 0.2, emissive: 0x78350f, emissiveIntensity: 0.4 });
 
       const lCover = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.2, 5.6), coverMat);
@@ -1387,7 +1636,7 @@
       spine.rotation.x = Math.PI / 2;
       bookGroup.add(spine);
 
-      const pageMat = new THREE.MeshStandardMaterial({ color: 0x111c38, emissive: 0x08132c, emissiveIntensity: 0.6, roughness: 0.3 });
+      const pageMat = new THREE.MeshStandardMaterial({ color: 0x0e172e, emissive: 0x070e1e, emissiveIntensity: 0.6, roughness: 0.3 });
       const lPage = new THREE.Mesh(new THREE.BoxGeometry(3.9, 0.12, 5.2), pageMat);
       lPage.position.set(-2.05, 0.14, 0);
       bookGroup.add(lPage);
@@ -1405,7 +1654,7 @@
       flipGroup.add(flipPage);
 
       /* -----------------------------------------------------------------------
-         VAULTIE THE 3D ANIMATED MASCOT (Disney / Pixar Level Rigging)
+         VAULTIE THE 3D ANIMATED MASCOT (Faithful to Lorapok Labs Bible)
          ----------------------------------------------------------------------- */
       mascotGroup = new THREE.Group();
       mascotGroup.position.set(1.9, 0.85, 0);
@@ -1426,8 +1675,8 @@
         const angle = (idx / projectMatrixData.length) * Math.PI * 2;
         const nodeGeo = new THREE.IcosahedronGeometry(0.35, 2);
         const nodeMat = new THREE.MeshStandardMaterial({
-          color: idx % 2 === 0 ? 0x00f2fe : 0xa855f7,
-          emissive: idx % 2 === 0 ? 0x0284c7 : 0x7e22ce,
+          color: idx % 2 === 0 ? 0x00ff88 : 0x00e5ff,
+          emissive: idx % 2 === 0 ? 0x052e16 : 0x083344,
           emissiveIntensity: 0.9,
           roughness: 0.2,
           metalness: 0.8
@@ -1448,7 +1697,7 @@
         pPos[i + 2] = (Math.random() - 0.5) * 7;
       }
       pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-      particleDust = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0xfbbf24, size: 0.08, transparent: true, opacity: 0.85 }));
+      particleDust = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0x00ff88, size: 0.08, transparent: true, opacity: 0.85 }));
       scene.add(particleDust);
 
       // Disney Eye-Blinking Loop
@@ -1467,7 +1716,7 @@
       function renderUniverse() {
         requestAnimationFrame(renderUniverse);
         const delta = clock.getDelta();
-        const time = clock.getElapsedTime();
+        const time = clock.getElapsedTime() * locomotionSpeedFactor;
 
         // Book gentle hover
         if (bookGroup) bookGroup.position.y = 0.5 + Math.sin(time * 1.5) * 0.05;
@@ -1478,6 +1727,16 @@
             const wave = Math.sin(time * 4 - i * 0.6) * 0.04;
             seg.position.y = (0.5 - i * 0.09) + wave;
             seg.rotation.x = Math.sin(time * 3 - i * 0.5) * 0.03;
+          });
+        }
+
+        // Robotic Legs Walking Locomotion
+        if (roboticLegs.length) {
+          roboticLegs.forEach((leg, i) => {
+            const side = i % 2 === 0 ? 1 : -1;
+            const legPhase = time * 8 + (i * Math.PI / 2);
+            leg.rotation.x = Math.sin(legPhase) * 0.35;
+            leg.rotation.z = (side * 0.2) + Math.cos(legPhase) * 0.1;
           });
         }
 
@@ -1520,37 +1779,58 @@
       console.warn("WebGL Init Warning:", err);
     }
 
-    /* Build/Rebuild 3D Larva Species */
+    /* Build/Rebuild 3D Larva Species with Small Robotic Legs & Glowing Eyes */
     function buildLarvaSpeciesMesh(speciesIdx) {
       currentSpeciesIdx = speciesIdx;
       const sp = larvaSpeciesData[speciesIdx];
 
-      // Clear existing mascot children
       while (mascotGroup.children.length > 0) {
         mascotGroup.remove(mascotGroup.children[0]);
       }
       larvaSegments = [];
       antennaTips = [];
+      roboticLegs = [];
 
       const armorMat = new THREE.MeshStandardMaterial({
         color: sp.color,
         emissive: sp.emissive,
         roughness: 0.25,
-        metalness: 0.75
+        metalness: 0.8
       });
       const neonRingMat = new THREE.MeshBasicMaterial({ color: sp.accent });
 
-      // 6 Segmented Caterpillar Torso
+      // 6 Segmented Caterpillar Torso (Plump, Cute, Segmented)
       for (let i = 0; i < 6; i++) {
         const segGroup = new THREE.Group();
-        const rad = 0.52 * (1.0 - i * 0.1);
+        const rad = 0.54 * (1.0 - i * 0.09);
         const seg = new THREE.Mesh(new THREE.SphereGeometry(rad, 20, 20), armorMat);
-        seg.scale.set(1.1, 0.95, 1.0);
+        seg.scale.set(1.15, 0.95, 1.0);
         segGroup.add(seg);
 
+        // Glowing neon circuit ring on each segment
         const r = new THREE.Mesh(new THREE.TorusGeometry(rad * 0.98, 0.03, 8, 24), neonRingMat);
         r.rotation.x = Math.PI / 2;
         segGroup.add(r);
+
+        // Small Robotic Legs (Left & Right) on middle segments
+        if (i >= 1 && i <= 3) {
+          [-1, 1].forEach((side) => {
+            const legGroup = new THREE.Group();
+            const legBone = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.02, 0.32, 8), armorMat);
+            legBone.position.set(0, -0.16, 0);
+            legGroup.add(legBone);
+
+            // Glowing joint
+            const joint = new THREE.Mesh(new THREE.SphereGeometry(0.045, 8, 8), neonRingMat);
+            joint.position.set(0, -0.32, 0);
+            legGroup.add(joint);
+
+            legGroup.position.set(side * (rad * 0.9), -0.15, 0);
+            legGroup.rotation.z = side * 0.45;
+            segGroup.add(legGroup);
+            roboticLegs.push(legGroup);
+          });
+        }
 
         segGroup.position.set(0, 0.5 - i * 0.09, -i * 0.42);
         mascotGroup.add(segGroup);
@@ -1559,25 +1839,36 @@
 
       headMesh = larvaSegments[0];
 
-      // Visor
-      visorMesh = new THREE.Mesh(
-        new THREE.BoxGeometry(0.55, 0.28, 0.25),
-        new THREE.MeshStandardMaterial({ color: sp.accent, emissive: sp.accent, emissiveIntensity: 1.5, roughness: 0.1 })
-      );
-      visorMesh.position.set(0, 0.12, 0.45);
-      headMesh.add(visorMesh);
+      // Large Expressive Glowing Eyes
+      const eyeSocketMat = new THREE.MeshBasicMaterial({ color: 0x050505 });
+      const eyeGlowMat = new THREE.MeshBasicMaterial({ color: sp.accent });
+      const pupilGlintMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
 
-      // Blinking Eyes
-      const eyeGeo = new THREE.SphereGeometry(0.08, 12, 12);
-      const eyeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+      // Left Eye
+      const socketL = new THREE.Mesh(new THREE.SphereGeometry(0.14, 16, 16), eyeSocketMat);
+      socketL.position.set(-0.19, 0.15, 0.52);
+      headMesh.add(socketL);
 
-      eyeLeft = new THREE.Mesh(eyeGeo, eyeMat);
-      eyeLeft.position.set(-0.16, 0.14, 0.58);
+      eyeLeft = new THREE.Mesh(new THREE.SphereGeometry(0.085, 14, 14), eyeGlowMat);
+      eyeLeft.position.set(-0.19, 0.15, 0.60);
       headMesh.add(eyeLeft);
 
-      eyeRight = new THREE.Mesh(eyeGeo, eyeMat);
-      eyeRight.position.set(0.16, 0.14, 0.58);
+      const glintL = new THREE.Mesh(new THREE.SphereGeometry(0.025, 8, 8), pupilGlintMat);
+      glintL.position.set(-0.21, 0.17, 0.67);
+      headMesh.add(glintL);
+
+      // Right Eye
+      const socketR = new THREE.Mesh(new THREE.SphereGeometry(0.14, 16, 16), eyeSocketMat);
+      socketR.position.set(0.19, 0.15, 0.52);
+      headMesh.add(socketR);
+
+      eyeRight = new THREE.Mesh(new THREE.SphereGeometry(0.085, 14, 14), eyeGlowMat);
+      eyeRight.position.set(0.19, 0.15, 0.60);
       headMesh.add(eyeRight);
+
+      const glintR = new THREE.Mesh(new THREE.SphereGeometry(0.025, 8, 8), pupilGlintMat);
+      glintR.position.set(0.21, 0.17, 0.67);
+      headMesh.add(glintR);
 
       // Stalk Antennas
       for (let side = -1; side <= 1; side += 2) {
@@ -1587,13 +1878,13 @@
         stalk.rotation.x = -0.2;
         headMesh.add(stalk);
 
-        const tip = new THREE.Mesh(new THREE.SphereGeometry(0.08, 12, 12), new THREE.MeshBasicMaterial({ color: sp.accent }));
+        const tip = new THREE.Mesh(new THREE.SphereGeometry(0.08, 12, 12), new THREE.MeshBasicMaterial({ color: sp.antennaColor }));
         tip.position.set(0, 0.28, 0);
         stalk.add(tip);
         antennaTips.push(tip);
       }
 
-      // Claws & Hands
+      // Forearms & Robotic Claws
       leftClaw = new THREE.Group();
       rightClaw = new THREE.Group();
 
@@ -1613,7 +1904,7 @@
         mascotGroup.add(h);
       });
 
-      // Holographic Keyboard
+      // Holographic Glass Keyboard
       const kb = new THREE.Mesh(
         new THREE.BoxGeometry(1.4, 0.04, 0.7),
         new THREE.MeshPhysicalMaterial({ color: sp.accent, transparent: true, opacity: 0.4, transmission: 0.8 })
@@ -1626,22 +1917,25 @@
     }
 
     /* =========================================================================
-       UNIVERSE MODE SWITCHER (Storybook vs Sanctuary vs Galaxy)
+       UNIVERSE MODE SWITCHER (Storybook vs Sanctuary vs Studio vs Galaxy)
        ========================================================================= */
     function setUniverseMode(mode) {
       currentUniverseMode = mode;
       playTone(520, 0.15, 'triangle');
 
       document.querySelectorAll('.mode-tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(`btn-mode-${mode}`).classList.add('active');
+      const activeBtn = document.getElementById(`btn-mode-${mode}`);
+      if (activeBtn) activeBtn.classList.add('active');
 
       const dynamicContent = document.getElementById('panel-dynamic-content');
       const speciesGrid = document.getElementById('species-grid');
+      const studioPanel = document.getElementById('studio-panel');
       const projectGrid = document.getElementById('project-grid');
 
       if (mode === 'story') {
         dynamicContent.style.display = 'block';
         speciesGrid.style.display = 'none';
+        studioPanel.style.display = 'none';
         projectGrid.style.display = 'none';
         celestialGroup.visible = false;
         bookGroup.visible = true;
@@ -1649,6 +1943,15 @@
       } else if (mode === 'sanctuary') {
         dynamicContent.style.display = 'none';
         speciesGrid.style.display = 'grid';
+        studioPanel.style.display = 'none';
+        projectGrid.style.display = 'none';
+        celestialGroup.visible = false;
+        bookGroup.visible = true;
+        renderCurrentLarvaSpecies();
+      } else if (mode === 'studio') {
+        dynamicContent.style.display = 'none';
+        speciesGrid.style.display = 'grid';
+        studioPanel.style.display = 'block';
         projectGrid.style.display = 'none';
         celestialGroup.visible = false;
         bookGroup.visible = true;
@@ -1656,13 +1959,14 @@
       } else if (mode === 'galaxy') {
         dynamicContent.style.display = 'none';
         speciesGrid.style.display = 'none';
+        studioPanel.style.display = 'none';
         projectGrid.style.display = 'grid';
         celestialGroup.visible = true;
         bookGroup.visible = false;
         renderProjectGalaxy();
       }
 
-      appendTerminalLine(`➜ Entered Zone: ${mode.toUpperCase()}`);
+      appendTerminalLine(`➜ Switched Universe Spatial Zone: ${mode.toUpperCase()}`);
     }
 
     /* =========================================================================
@@ -1706,7 +2010,7 @@
     }
 
     /* =========================================================================
-       LARVA SANCTUARY RENDERING LOGIC
+       LARVA SANCTUARY & STUDIO LOGIC
        ========================================================================= */
     function switchLarvaSpecies(idx) {
       currentSpeciesIdx = idx;
@@ -1732,12 +2036,48 @@
         gsap.to(controls.target, { x: 1.9, y: 1.2, z: 0, duration: 1.2, ease: "power2.inOut" });
       }
 
-      appendTerminalLine(`🐛 Switched Mascot: ${sp.name} [${sp.role}]`);
+      appendTerminalLine(`🐛 Loaded Mascot: ${sp.name} [${sp.role}]`);
       if (isNarrating) speakCurrentContext();
     }
 
+    function setLocomotionSpeed(speed) {
+      locomotionSpeedFactor = speed;
+      playTone(800, 0.1);
+      appendTerminalLine(`⚡ Locomotion Speed Multiplier: ${speed}x`);
+    }
+
+    function setStudioLight(theme) {
+      if (theme === 'cyber') {
+        keyLight.color.setHex(0x00ff88);
+        fillLight.color.setHex(0x00e5ff);
+      } else if (theme === 'gold') {
+        keyLight.color.setHex(0xfbbf24);
+        fillLight.color.setHex(0xf59e0b);
+      } else if (theme === 'matrix') {
+        keyLight.color.setHex(0x00ff88);
+        fillLight.color.setHex(0x15803d);
+      }
+      playTone(650, 0.1);
+      appendTerminalLine(`💡 Studio Vibe Adjusted: ${theme.toUpperCase()}`);
+    }
+
+    function setDirectorCamera(view) {
+      if (!camera || !controls || typeof gsap === 'undefined') return;
+      playTone(500, 0.1);
+      if (view === 'close') {
+        gsap.to(camera.position, { x: 1.9, y: 2.2, z: 4.5, duration: 1.2, ease: "power2.inOut" });
+        gsap.to(controls.target, { x: 1.9, y: 1.2, z: 0, duration: 1.2, ease: "power2.inOut" });
+      } else if (view === 'orbit') {
+        gsap.to(camera.position, { x: 0, y: 6.5, z: 13, duration: 1.2, ease: "power2.inOut" });
+        gsap.to(controls.target, { x: 0, y: 1.8, z: 0, duration: 1.2, ease: "power2.inOut" });
+      } else if (view === 'book') {
+        gsap.to(camera.position, { x: 0, y: 4.8, z: 9.0, duration: 1.2, ease: "power2.inOut" });
+        gsap.to(controls.target, { x: 0, y: 1.0, z: 0, duration: 1.2, ease: "power2.inOut" });
+      }
+    }
+
     /* =========================================================================
-       18-PROJECT CELESTIAL GALAXY RENDERING LOGIC
+       18-PROJECT CELESTIAL GALAXY LOGIC
        ========================================================================= */
     function renderProjectGalaxy() {
       const grid = document.getElementById('project-grid');
@@ -1802,6 +2142,9 @@
         gsap.to(mascotGroup.rotation, { y: "+=6.28", duration: 1.0, ease: "power2.inOut", onComplete: () => { isMascotDancing = false; } });
         gsap.to(mascotGroup.position, { y: 1.4, duration: 0.3, yoyo: true, repeat: 3 });
         if (typeof confetti === 'function') confetti({ particleCount: 50, spread: 60, origin: { x: 0.5, y: 0.5 } });
+      } else if (type === 'crawl') {
+        isMascotCrawling = true;
+        gsap.to(mascotGroup.position, { z: 1.0, duration: 0.8, yoyo: true, repeat: 1, onComplete: () => { isMascotCrawling = false; } });
       } else if (type === 'typing') {
         playTone(1200, 0.3, 'sawtooth');
         gsap.to(leftClaw.rotation, { x: 0.8, duration: 0.08, yoyo: true, repeat: 14 });
@@ -1827,7 +2170,7 @@
         const st = masterStories[currentStoryIdx];
         currentStepIdx = (currentStepIdx + delta + st.chapters.length) % st.chapters.length;
         renderCurrentStoryChapter();
-      } else if (currentUniverseMode === 'sanctuary') {
+      } else if (currentUniverseMode === 'sanctuary' || currentUniverseMode === 'studio') {
         switchLarvaSpecies((currentSpeciesIdx + delta + larvaSpeciesData.length) % larvaSpeciesData.length);
       } else if (currentUniverseMode === 'galaxy') {
         selectProjectNode((currentProjectIdx + delta + projectMatrixData.length) % projectMatrixData.length);
@@ -1849,7 +2192,7 @@
     function appendTerminalLine(text) {
       const line = document.createElement('div');
       line.className = 't-line';
-      if (text.includes('ALL DIFFS') || text.includes('Published') || text.includes('Online') || text.includes('Complete')) {
+      if (text.includes('ALL DIFFS') || text.includes('Published') || text.includes('Online') || text.includes('Complete') || text.includes('Active')) {
         line.classList.add('t-green');
       } else if (text.includes('MISMATCH') || text.includes('WARN')) {
         line.classList.add('t-gold');
@@ -1874,8 +2217,8 @@
         if (cmd === 'help') {
           appendTerminalLine("Commands:");
           appendTerminalLine("  • story [1..3]   : Switch story (1: Marathon, 2: Instar, 3: Matrix)");
-          appendTerminalLine("  • species [1..5] : Switch larva species (1: Vaultie, 2: Apex, 3: Scout, 4: Wizard, 5: Scaler)");
-          appendTerminalLine("  • mode [story|sanctuary|galaxy] : Switch universe zone");
+          appendTerminalLine("  • species [1..5] : Switch larva species (1: Vaultie, 2: Apex, 3: Scout, 4: Wizard, 5: Titan)");
+          appendTerminalLine("  • mode [story|sanctuary|studio|galaxy] : Switch universe spatial zone");
           appendTerminalLine("  • agent run      : Execute Perplexity AI Coding Agent");
           appendTerminalLine("  • mcp            : Check Lorapok Atlas MCP Server");
           appendTerminalLine("  • dance / party  : Celebrate with mascot");
@@ -1888,6 +2231,7 @@
           if (num >= 0 && num < 5) switchLarvaSpecies(num);
         } else if (cmd === 'mode story') setUniverseMode('story');
         else if (cmd === 'mode sanctuary') setUniverseMode('sanctuary');
+        else if (cmd === 'mode studio') setUniverseMode('studio');
         else if (cmd === 'mode galaxy') setUniverseMode('galaxy');
         else if (cmd === 'agent run') {
           appendTerminalLine("🚀 [Lorapok AI Agent]: Initializing AST parsing & test runner...");
@@ -1914,7 +2258,7 @@
        MODALS & LIGHTBOX GALLERY
        ========================================================================= */
     const galleryItems = [
-      { src: "assets/images/mascot_hero.png", title: "Vaultie the Cybernetic Larva" },
+      { src: "assets/images/mascot_hero.png", title: "Vaultie the Cybernetic BSF Larva" },
       { src: "assets/cartoons/cartoon-audio-enjoying.png", title: "Instar 32-Band Lossless Audio" },
       { src: "assets/cartoons/cartoon-gamer-8k.png", title: "8K HDR Zero-Latency Gaming Playback" },
       { src: "assets/cartoons/cartoon-family-android-tv.png", title: "Android TV Living Room Cinema" },
