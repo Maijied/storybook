@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none" role="img" aria-label="Cursor Curse Monitor mascot watching token usage">
+  <defs>
+    <linearGradient id="armor" x1="20" y1="16" x2="108" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3d4654"/>
+      <stop offset="50%" stop-color="#1a1f28"/>
+      <stop offset="100%" stop-color="#2b3340"/>
+    </linearGradient>
+    <linearGradient id="neonPanel" x1="32" y1="48" x2="96" y2="88" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#39ff14"/>
+      <stop offset="100%" stop-color="#7c5cff"/>
+    </linearGradient>
+    <radialGradient id="eyeGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#39ff14"/>
+      <stop offset="70%" stop-color="#39ff14" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#39ff14" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Token usage arc (Cursor connection ring) -->
+  <circle class="usage-ring" cx="64" cy="64" r="58" stroke="url(#neonPanel)" stroke-width="2" stroke-opacity="0.35" fill="none" stroke-dasharray="8 6">
+    <animateTransform attributeName="transform" type="rotate" from="0 64 64" to="360 64 64" dur="24s" repeatCount="indefinite"/>
+  </circle>
+  <circle class="usage-pulse" cx="64" cy="64" r="54" stroke="#5b9dff" stroke-width="1.5" fill="none" opacity="0.5">
+    <animate attributeName="r" values="52;56;52" dur="2.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.25;0.55;0.25" dur="2.5s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Body segments -->
+  <ellipse cx="64" cy="78" rx="34" ry="28" fill="url(#armor)" stroke="#4a5568" stroke-width="1.2"/>
+  <ellipse cx="64" cy="52" rx="28" ry="24" fill="url(#armor)" stroke="#4a5568" stroke-width="1.2"/>
+  <path d="M48 58 Q64 68 80 58" stroke="url(#neonPanel)" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+
+  <!-- Robotic legs -->
+  <path d="M38 88 L32 102 M44 92 L38 108 M84 92 L90 108 M90 88 L96 102" stroke="#5b9dff" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- Head -->
+  <ellipse cx="64" cy="44" rx="26" ry="22" fill="url(#armor)" stroke="#5b9dff" stroke-width="1" opacity="0.9"/>
+
+  <!-- Eye sockets -->
+  <ellipse cx="52" cy="42" rx="10" ry="11" fill="#0a0e14" stroke="#39ff14" stroke-width="1" opacity="0.9"/>
+  <ellipse cx="76" cy="42" rx="10" ry="11" fill="#0a0e14" stroke="#39ff14" stroke-width="1" opacity="0.9"/>
+
+  <!-- Glowing eyes -->
+  <g class="eyes" filter="url(#glow)">
+    <circle class="eye-glow eye-left" cx="52" cy="42" r="7" fill="url(#eyeGlow)"/>
+    <circle class="eye-glow eye-right" cx="76" cy="42" r="7" fill="url(#eyeGlow)"/>
+    <circle class="pupil pupil-left" cx="52" cy="42" r="3.5" fill="#39ff14">
+      <animate attributeName="cx" values="50;54;51;53;52" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle class="pupil pupil-right" cx="76" cy="42" r="3.5" fill="#39ff14">
+      <animate attributeName="cx" values="74;78;75;77;76" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle class="eye-shine" cx="50" cy="40" r="1.2" fill="white" opacity="0.9">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle class="eye-shine" cx="74" cy="40" r="1.2" fill="white" opacity="0.9">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+</svg>
